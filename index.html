@@ -874,7 +874,7 @@ function bossA0(b,dt){
   else{b.t=13;b.n++;fireA(x,y,Math.PI/2+Math.sin(b.n*.4)*1.2,2.6);if(b.n%5==0)fireA(x,y,a0,3.6)}
 }
 function mv(f,dt){
-  f.a+=dt;f.fl-=dt;f.fc+=dt*D().fr*GF();const k=f.k;
+  f.a+=dt;f.fl-=dt;f.fc+=dt*D().fr*GF()*(f.k=='z'||f.k=='b'?1:.88);const k=f.k;
   if(k=='u'){f.y+=f.vy*dt;f.x=cl(f.x0+Math.sin(f.a/28)*70,20,W-20);if(f.fc>=f.nx){f.fc=0;f.nx=85;fireA(f.x,f.y,aim(f.x,f.y),3)}}
   else if(k=='g'){
     if(f.a<420){if(f.y<f.ty){f.y+=1.6*dt;f.fc=0}else{f.x+=f.vx*dt;if(f.x<40)f.vx=Math.abs(f.vx);if(f.x>W-40)f.vx=-Math.abs(f.vx);
