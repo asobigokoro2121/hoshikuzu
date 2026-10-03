@@ -499,7 +499,7 @@ const SCC={};function scr(){const s=gi(),k=s+'-'+di;return SCC[k]||(SCC[k]=[...S
 const MBN=['ガレオン','ブロッカー','テンペスト','カロネード','アヴァロン'],MHP=[90,145,195,260,365],
   MP=[['#a9c2ff','#1d2a66'],['#ffb09a','#5a1a10'],['#99ffdc','#0f4a3c'],['#ffdc96','#5a3d10'],['#ff98c8','#4a0f2a']],
   MC=[[140,180,255],[255,150,110],[120,255,210],[255,210,120],[255,120,180]];
-function midSpawn(){const T=gi();add({k:'z',st:T,x:W/2,y:-50,r:MR[T],mh:MHP[T]*1.21,ty:112,nx:70,n:0,pts:500*(T+1)});sfx('warn');msg='警告！中型艦'+MBN[T]+'接近';mt=110}
+function midSpawn(){const T=gi();add({k:'z',st:T,x:W/2,y:-50,r:MR[T],mh:MHP[T]*1.21*(co>2?1.25:1),ty:112,nx:70,n:0,pts:500*(T+1)});sfx('warn');msg='警告！中型艦'+MBN[T]+'接近';mt=110}
 const MPAT=[
   (f,x,y,a)=>{for(let i=-2;i<3;i++)fireA(x,y,a+i*.2,2.8);f.nx=70},
   (f,x,y)=>{for(let i=0;i<10;i++)fireA(x,y,i/10*TAU+f.n*.3,2.2);f.nx=80},
@@ -512,7 +512,7 @@ const MPAT=[
   (f,x,y,a)=>{for(const o of[-.4,0,.4]){fireA(x,y,a+o,2);const q=eb[eb.length-1];q.hm=100;q.ty=5}f.nx=90}];
 const MSEQ=[[0,1],[0,4,1],[2,3,2],[0,2,5],[0,1,2,5]];
 function midAI(f,dt){
-  if(f.a>2180){if(!f.esc){f.esc=1;pt.push({x:f.x,y:f.y+46,vx:0,vy:-.3,l:80,m:80,c:'#c8d0ff',txt:'中型艦が撤退した',fs:13})}f.y-=1.6*dt;return}
+  if(f.a>(co>2?2700:2180)){if(!f.esc){f.esc=1;pt.push({x:f.x,y:f.y+46,vx:0,vy:-.3,l:80,m:80,c:'#c8d0ff',txt:'中型艦が撤退した',fs:13})}f.y-=1.6*dt;return}
   if(f.y<f.ty){f.y+=1.4*dt;f.fc=0;return}
   f.x+=(W/2+Math.sin(f.a/80)*90-f.x)*Math.min(1,.05*dt);
   if(f.fc>=f.nx){f.fc=0;f.n++;const y=f.y+20,q=MSEQ[f.st];MPAT[q[f.n%q.length]](f,f.x,y,aim(f.x,y))}}
@@ -979,7 +979,7 @@ function upd(dt){
     if(gO<=0&&inv<=0&&Math.abs(ship.y-z.y)<3+SP().hb&&out(ship.x)){hurt();if(st!='play')return}
     for(const b of bl)if(!b.d&&Math.abs(b.y-z.y)<7&&out(b.x)){b.d=1;boom(b.x,z.y,'#ff9aa8',2)}}
   fz=fz.filter(z=>z.y<H+20);if(gim2(dt,S2,gq,bo))return}
-  const mid=fo.some(f=>f.k=='z');if(!bo&&!bsp&&stg<7&&!mid){stT+=dt;const SC=scr();while(sci<SC.length&&stT>=SC[sci][0]){const[,op,...ar]=SC[sci++];if('dl dv sw rs uc mn sn tn ch cr ph gp'.includes(op)&&R()<(di?.24:.12))continue;WV[op](...ar)}}if(!bo&&!bsp&&stg<7&&stT>=(co>2?3600:3300)){bsp=1;const T=gi(),ABF=[1.03, 0.96, 1.02, 1.0, 0.96, 0.55, 0.97, 0.99, 1.09, 0.99, 0.99, 1.02, 1.06, 1.08, 0.99, 1.11, 1.01, 0.96, 1.04, 1.06, 1.11, 1.0],ABT=[[46, 88, 117, 138, 145], [140, 158, 193, 254, 331], [112, 178, 222, 278, 306]],h=Math.round((HPS[T]*D().bh*1.15+ABT[wt][Math.min(5,Math.max(1,pl))-1]*(ABF[T]??1))*1.32*(1+GL()*.1));fo.push({k:'b',bt:T,x:W/2,y:-70,r:BR[T],hp:h,mh:h,pts:1000*(T+1),a:0,t:60,n:0,lt:150,lc:0,lx:[],fl:0,parts:mkParts(T,h)});sfx('warn');msg='';mt=0;cutI={l:170,m:170,T}}
+  const mid=fo.some(f=>f.k=='z');if(!bo&&!bsp&&stg<7&&!mid){stT+=dt;const SC=scr();while(sci<SC.length&&stT>=SC[sci][0]){const[,op,...ar]=SC[sci++];if('dl dv sw rs uc mn sn tn ch cr ph gp'.includes(op)&&R()<(di?.24:.12))continue;WV[op](...ar)}}if(!bo&&!bsp&&stg<7&&stT>=(co>2?3600:3300)){bsp=1;const T=gi(),ABF=[1.03, 0.96, 1.02, 1.0, 0.96, 0.55, 0.97, 0.99, 1.09, 0.99, 0.99, 1.02, 1.06, 1.08, 0.99, 1.11, 1.01, 0.96, 1.04, 1.06, 1.11, 1.0],ABT=[[46, 88, 117, 138, 145], [140, 158, 193, 254, 331], [112, 178, 222, 278, 306]],h=Math.round((HPS[T]*D().bh*1.15+ABT[wt][Math.min(5,Math.max(1,pl))-1]*(ABF[T]??1))*1.32*(co>2?1.25:1)*(1+GL()*.1));fo.push({k:'b',bt:T,x:W/2,y:-70,r:BR[T],hp:h,mh:h,pts:1000*(T+1),a:0,t:60,n:0,lt:150,lc:0,lx:[],fl:0,parts:mkParts(T,h)});sfx('warn');msg='';mt=0;cutI={l:170,m:170,T}}
   sp-=dt;if(sp<=0&&stg<7&&!(PRC&&PRC.k)&&!fo.some(f=>f.rest>0)){spawn(bo);sp=Math.max(14,48-lv*3.5)*(.6+R()*.8)*(bo||mid?3.6:di?3.05:2.7)/(sg().sp*D().sp*CF[co].sp*(1+GL()*.25))}
   for(const f of fo){
     FS=f.k=='b'?(BFS[f.bt]??2):f.k=='z'?(MFS[f.st]??2):FSM[f.k]||0;FC=f.k=='b'?BCOL[f.bt]:f.k=='z'?MC[f.st]:f.k=='v'?[205,140,255]:f.k=='e'?[255,120,220]:EFC[f.k]||null;mv(f,dt);FS=0;FC=null;if(f.dy>0||f.dead)continue;
