@@ -950,7 +950,7 @@ function upd(dt){
   inv-=dt;dr-=dt;bcd-=dt;if(chT>0){chT-=dt;if(chT<=0)ch=0}lvF-=dt;if(ship.mf>0)ship.mf-=dt;hf-=dt;bf-=dt;if(SP().rg){if(bar<2){brg-=dt;if(brg<=0){bar++;brg=SP().rg;sfx('shield');pt.push({x:ship.x,y:ship.y-26,vx:0,vy:-.6,l:45,m:45,c:'#9cc4ff',txt:'バリア回復',fs:12})}}else brg=SP().rg}if(shake<.5)shake=0;
   for(const b of bl){
     if(b.hm){let q=null,dq=1e9;for(const f of fo)if(f.y>0&&!f.dead&&!f.gh){const d=Math.hypot(f.x-b.x,f.y-b.y);if(d<dq){dq=d;q=f}}
-      if(q){let qx=q.x,qy=q.y;if(shieldF(q)<1){let gd=1e9;for(const g of live(q,'gen')){const P=partPos(q,g),e=Math.hypot(P.x-b.x,P.y-b.y);if(e<gd){gd=e;qx=P.x;qy=P.y}}}const c=Math.atan2(b.vy,b.vx);let d=Math.atan2(qy-b.y,qx-b.x)-c;d=Math.atan2(Math.sin(d),Math.cos(d));const n=c+cl(d,-.12*dt,.12*dt);b.vx=Math.cos(n)*7;b.vy=Math.sin(n)*7}
+      if(q){let qx=q.x,qy=q.y;if(shieldF(q)<1){let gd=1e9;for(const g of live(q,'gen')){const P=partPos(q,g),e=Math.hypot(P.x-b.x,P.y-b.y);if(e<gd){gd=e;qx=P.x;qy=P.y}}}const c=Math.atan2(b.vy,b.vx);let d=Math.atan2(qy-b.y,qx-b.x)-c;d=Math.atan2(Math.sin(d),Math.cos(d));const n=c+cl(d,-.065*dt,.065*dt);b.vx=Math.cos(n)*7;b.vy=Math.sin(n)*7}
       b.x+=b.vx*dt;b.y+=b.vy*dt;(b.tr||(b.tr=[])).push(b.x,b.y);if(b.tr.length>16)b.tr.splice(0,2)}
     else{b.y-=(b.vy||10)*dt;b.x+=b.vx*dt}
   }
