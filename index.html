@@ -597,6 +597,7 @@ function partPos(f,q){
   if(q.orb!=null){const a=f.a/40+q.orb*TAU/(q.on||4);return{x:f.x+Math.cos(a)*(q.or||64),y:f.y+Math.sin(a)*(q.ory||48)}}
   const sh=q.kd=='pan'?Math.sign(q.ox)*(f.op||0)*14:0;return{x:f.x+q.ox+sh,y:f.y+q.oy}}
 const live=(f,kd)=>f.parts?f.parts.filter(q=>!q.dead&&(!kd||q.kd==kd)):[];
+var PBL=1;function PBM(b){const d=Math.hypot(b.x-ship.x,b.y-ship.y);return PBL=1+.5*Math.min(1,Math.max(0,(240-d)/160))}
 function partHit(f,q,d){q.hp-=d;q.fl=3;f.hp-=d*.5;f.fl=Math.max(f.fl,1);
   if(q.hp<=0&&!q.dead){q.dead=true;const P=partPos(f,q),bon=300*(f.bt+1);score+=bon;hud();f.hp-=f.mh*.04;shake=Math.max(shake,12);sfx('kill');
     explode(P.x,P.y,q.r*1.6,YE);explode(P.x,P.y,q.r,'#ff7a3d');pt.push({x:P.x,y:P.y-q.r-6,vx:0,vy:-.6,l:70,m:70,c:'#ffd166',txt:q.nm+'破壊 +'+bon,fs:14});
@@ -951,7 +952,7 @@ function upd(dt){
   inv-=dt;dr-=dt;bcd-=dt;if(chT>0){chT-=dt;if(chT<=0)ch=0}lvF-=dt;if(ship.mf>0)ship.mf-=dt;hf-=dt;bf-=dt;if(SP().rg){if(bar<2){brg-=dt;if(brg<=0){bar++;brg=SP().rg;sfx('shield');pt.push({x:ship.x,y:ship.y-26,vx:0,vy:-.6,l:45,m:45,c:'#9cc4ff',txt:'バリア回復',fs:12})}}else brg=SP().rg}if(shake<.5)shake=0;
   for(const b of bl){
     if(b.hm){let q=null,dq=1e9;for(const f of fo)if(f.y>0&&!f.dead&&!f.gh){const d=Math.hypot(f.x-b.x,f.y-b.y);if(d<dq){dq=d;q=f}}
-      if(q){let qx=q.x,qy=q.y;if(shieldF(q)<1){let gd=1e9;for(const g of live(q,'gen')){const P=partPos(q,g),e=Math.hypot(P.x-b.x,P.y-b.y);if(e<gd){gd=e;qx=P.x;qy=P.y}}}const c=Math.atan2(b.vy,b.vx);let d=Math.atan2(qy-b.y,qx-b.x)-c;d=Math.atan2(Math.sin(d),Math.cos(d));const n=c+cl(d,-.065*dt,.065*dt);b.vx=Math.cos(n)*7;b.vy=Math.sin(n)*7}
+      if(q){let qx=q.x,qy=q.y;if(shieldF(q)<1){let gd=1e9;for(const g of live(q,'gen')){const P=partPos(q,g),e=Math.hypot(P.x-b.x,P.y-b.y);if(e<gd){gd=e;qx=P.x;qy=P.y}}}const c=Math.atan2(b.vy,b.vx);let d=Math.atan2(qy-b.y,qx-b.x)-c;d=Math.atan2(Math.sin(d),Math.cos(d));const n=c+cl(d,-.052*dt,.052*dt);b.vx=Math.cos(n)*7;b.vy=Math.sin(n)*7}
       b.x+=b.vx*dt;b.y+=b.vy*dt;(b.tr||(b.tr=[])).push(b.x,b.y);if(b.tr.length>16)b.tr.splice(0,2)}
     else{b.y-=(b.vy||10)*dt;b.x+=b.vx*dt}
   }
@@ -985,12 +986,12 @@ function upd(dt){
     for(const b of bl){
       if(b.d||f.y<0||f.gh||(b.h&&b.h.has(f)))continue;
       if(f.k=='b'&&f.parts&&!f.dy){let hp2=null;for(const q of f.parts){if(q.dead||(b.h&&b.h.has(q)))continue;const P=partPos(f,q);if(Math.hypot(b.x-P.x,b.y-P.y)<q.r+(b.L?6:3)){hp2=q;break}}
-        if(hp2){if(b.pi)b.h.add(hp2);else b.d=1;sfx('hit');boom(b.x,b.y,'#ffe7a0',3);partHit(f,hp2,(b.dm||1)*SP().dm);if(f.dead||f.dy)break;continue}}
+        if(hp2){if(b.pi)b.h.add(hp2);else b.d=1;sfx('hit');partHit(f,hp2,(b.dm||1)*SP().dm*PBM(b));boom(b.x,b.y,PBL>1.25?'#ffb347':'#ffe7a0',PBL>1.25?5:3);if(f.dead||f.dy)break;continue}}
       if(f.k=='h'){const d=Math.hypot(b.x-f.x,b.y-f.y);if(d<f.r+15&&d>f.r-4&&((Math.atan2(b.y-f.y,b.x-f.x)-f.sa)%TAU+TAU)%TAU<f.sw){if(b.pi)b.h.add(f);else b.d=1;f.sf=5;boom(b.x,b.y,'#9cc4ff',2);sfx('tink');continue}}
       if(Math.hypot(b.x-f.x,b.y-f.y)>f.r+(b.L?6:3)&&!(f.k=='q'&&f.sg.some(q=>Math.hypot(b.x-q[0],b.y-q[1])<9)))continue;
-      if(b.pi)b.h.add(f);else b.d=1;f.hp-=(b.dm||1)*SP().dm*shieldF(f);if(f.fl<-5)f.fl=3;sfx('hit');
+      if(b.pi)b.h.add(f);else b.d=1;f.hp-=(b.dm||1)*SP().dm*PBM(b)*shieldF(f);if(f.fl<-5)f.fl=3;sfx('hit');
       if(f.hp<=0){kill(f);break}
-      boom(b.x,b.y,shieldF(f)<1?'#8fd0ff':'#fff',3);
+      boom(b.x,b.y,shieldF(f)<1?'#8fd0ff':PBL>1.25?'#ffb347':'#fff',PBL>1.25?5:3);
     }
     if(!f.dead&&!f.gh&&!f.nc&&inv<=0&&(Math.hypot(ship.x-f.x,ship.y-f.y)<f.r+SP().hbb||f.k=='q'&&f.sg.some(q=>Math.hypot(ship.x-q[0],ship.y-q[1])<7+SP().hbb))){if(f.k!='b'&&f.k!='z')f.dead=1;hurt();if(st!='play')return}
   }
@@ -1508,7 +1509,7 @@ function gim2(dt,S2,gq,bo){
   if(S2.ice&&gq){GT.ice=(GT.ice??150)-dt*S2.ice;if(GT.ice<=0){GT.ice=320+R()*120;iceRow()}}
   for(const z of ibk){z.y+=z.vy*dt;if(z.fl>0)z.fl-=dt;if(z.hp<=0)continue;
     const L=z.x-z.w/2,Rr=z.x+z.w/2,T=z.y-z.h/2,B=z.y+z.h/2;
-    for(const b of bl){if(b.d||b.x<L-3||b.x>Rr+3||b.y<T-4||b.y>B+8)continue;if(b.pi){if(b.h.has(z))continue;b.h.add(z)}else b.d=1;z.hp-=(b.dm||1)*SP().dm;z.fl=3;sfx('tink');boom(b.x,B,'#cfefff',2);if(z.hp<=0)break}
+    for(const b of bl){if(b.d||b.x<L-3||b.x>Rr+3||b.y<T-4||b.y>B+8)continue;if(b.pi){if(b.h.has(z))continue;b.h.add(z)}else b.d=1;z.hp-=(b.dm||1)*SP().dm*PBM(b);z.fl=3;sfx('tink');boom(b.x,B,'#cfefff',2);if(z.hp<=0)break}
     for(const q of eb)if(!q.d&&q.x>L&&q.x<Rr&&q.y>T&&q.y<B){q.d=1;pt.push({x:q.x,y:q.y,vx:0,vy:0,l:8,m:8,c:'#cfefff',ring:4})}
     if(gO<=0&&inv<=0&&ship.x>L-hb*.7&&ship.x<Rr+hb*.7&&ship.y>T-hb*.7&&ship.y<B+hb*.7){hurt();if(st!='play')return 1}}
   for(const z of ibk)if(z.hp<=0&&!z.br){z.br=1;iceShatter(z.x,z.y,14);sfx('kill');dust(z.x,z.y,3,1.6);score+=30;pt.push({x:z.x,y:z.y,vx:0,vy:-.6,l:30,m:30,c:'#bff3ff',txt:'+30',fs:11})}
@@ -1517,7 +1518,7 @@ function gim2(dt,S2,gq,bo){
   if(S2.icl&&gq){GT.icl=(GT.icl??200)-dt*S2.icl;if(GT.icl<=0){GT.icl=150+R()*90;const n=R()<.35?2:1;let x0=0;for(let i=0;i<n;i++){const x=i?cl(x0+(R()<.5?-1:1)*(80+R()*60),20,W-20):cl(ship.x+(R()-.5)*90,20,W-20);x0=x;icl.push({x,y:-34,vy:0,warn:78,hp:3*D().hp})}sfx('buzz')}}
   for(const z of icl){if(z.warn>0){z.warn-=dt;if(z.warn<=0)sfx('snipe');continue}
     z.vy=Math.min(9,z.vy+.5*dt);z.y+=z.vy*dt;
-    for(const b of bl){if(b.d||Math.abs(b.x-z.x)>8||b.y<z.y-32||b.y>z.y+8)continue;if(b.pi){if(b.h.has(z))continue;b.h.add(z)}else b.d=1;z.hp-=(b.dm||1)*SP().dm;if(z.hp<=0){z.dead=1;iceShatter(z.x,z.y-12,9);sfx('kill');score+=40;pt.push({x:z.x,y:z.y-20,vx:0,vy:-.6,l:30,m:30,c:'#bff3ff',txt:'+40',fs:11});break}}
+    for(const b of bl){if(b.d||Math.abs(b.x-z.x)>8||b.y<z.y-32||b.y>z.y+8)continue;if(b.pi){if(b.h.has(z))continue;b.h.add(z)}else b.d=1;z.hp-=(b.dm||1)*SP().dm*PBM(b);if(z.hp<=0){z.dead=1;iceShatter(z.x,z.y-12,9);sfx('kill');score+=40;pt.push({x:z.x,y:z.y-20,vx:0,vy:-.6,l:30,m:30,c:'#bff3ff',txt:'+40',fs:11});break}}
     if(!z.dead&&gO<=0&&inv<=0&&Math.abs(ship.x-z.x)<5+hb*.8&&ship.y>z.y-32&&ship.y<z.y+6){hurt();if(st!='play')return 1}}
   icl=icl.filter(z=>!z.dead&&z.y<H+60);
   // ---- freezing mist ----
@@ -2502,7 +2503,7 @@ function pdExc(f,q){const c=EXC[q.el];glow(0,0,q.r*2.4,c,.7);gem(0,0,q.r*.85,c,q
 function exHush(b){bfl=Math.max(bfl,10);sfx('secret');for(const q of eb){if(q.dl>0)continue;q.fx=1;q.dl=50+R()*24;q.dk=.02;q.dv=Math.min(4,Math.hypot(q.vx,q.vy)*1.1+.8);q.da=(R()-.5)*.2}pt.push({x:W/2,y:H/2-110,vx:0,vy:-.2,l:90,m:90,c:'#f0e0ff',txt:'星の静寂',fs:20})}
 const EXT=[.75,.5,.25];
 // ---- shootable gimmick objects ----
-function exHit(o,r){for(const q of bl){if(q.d||(q.h&&q.h.has(o)))continue;if(Math.hypot(q.x-o.x,q.y-o.y)<r+(q.L?6:3)){if(q.pi)q.h.add(o);else q.d=1;o.hp-=(q.dm||1)*SP().dm;o.fl=3;sfx('hit');boom(q.x,q.y,'#ffffff',2);if(o.hp<=0)return 1}}return 0}
+function exHit(o,r){for(const q of bl){if(q.d||(q.h&&q.h.has(o)))continue;if(Math.hypot(q.x-o.x,q.y-o.y)<r+(q.L?6:3)){if(q.pi)q.h.add(o);else q.d=1;o.hp-=(q.dm||1)*SP().dm*PBM(q);o.fl=3;sfx('hit');boom(q.x,q.y,'#ffffff',2);if(o.hp<=0)return 1}}return 0}
 function exSay(s,c='#f0e0ff'){pt.push({x:W/2,y:H/2-140,vx:0,vy:-.15,l:110,m:110,c,txt:s,fs:16})}
 // 銀河: 星座の檻 — nodes joined by lines that become lasers
 function exCons(b){const n=4+(R()*2|0),P=[];for(let i=0;i<n;i++){const x=26+(W-52)*i/(n-1)+(R()-.5)*24;let y=240+R()*230;if(Math.abs(x-ship.x)<60&&Math.abs(y-ship.y)<50)y=y<ship.y?y-60:y+60;P.push({x,y:cl(y,200,H-60),hp:5*D().hp,fl:0})}b.cons={n:P,w:96,a:0};sfx('warn2');if(!b.sayC){b.sayC=1;exSay('星座の檻 ― 星を撃てば線が切れる')}}
@@ -3214,7 +3215,7 @@ addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=0});
 $('ovb').addEventListener('click',act);$('pb').addEventListener('click',()=>{au();st=='play'?pause():st=='pause'&&act()});$('rs').addEventListener('click',resetSave);$('mu').addEventListener('click',()=>{au();A.on=!A.on;try{localStorage.setItem('hoshikuzu-snd',A.on?1:0)}catch(e){}if(MU.m)MU.m.gain.value=A.on?1:0;hud()});document.querySelectorAll('#dif button').forEach(b=>b.addEventListener('click',()=>{au();if(+b.dataset.d!=di)sfx('sel');setDi(+b.dataset.d)}));document.querySelectorAll('#cos button').forEach(b=>b.addEventListener('click',()=>{au();if(+b.dataset.c!=co)sfx('sel');setCo(+b.dataset.c)}));document.querySelectorAll('#stp button').forEach(b=>b.addEventListener('click',()=>{au();if(+b.dataset.g!=ss)sfx('sel');setSs(+b.dataset.g)}));document.querySelectorAll('#shp button').forEach(b=>b.addEventListener('click',()=>{au();if(+b.dataset.s!=si)sfx('sel');setSi(+b.dataset.s)}));document.addEventListener('visibilitychange',()=>{if(document.hidden)pause()});$('bb').addEventListener('pointerdown',e=>{e.preventDefault();au();useBomb()});cv.addEventListener('pointerdown',au);
 
 secUI();coUI();thA=thB=co*7;setSi(si);shipPrev();setDi(di);hud();
-const TTL='ドラッグで移動、弾は自動で発射。\nもう1本の指を置くと集中モード（Shift）。\nS・L・Mで武器強化、左下ボタンでボム。';
+const TTL='ドラッグで移動、弾は自動で発射。\nもう1本の指を置くと集中モード（Shift）。\nS・L・Mで武器強化、左下ボタンでボム。\n敵の近くで撃つほど威力アップ！';
 $('ovq').addEventListener('click',toTitle);$('ovh').addEventListener('pointerdown',()=>{if(st!='title'||sec)return;const n=performance.now();tp=tp.filter(x=>n-x<2500);tp.push(n);if(tp.length>=7)unlockSec()});addEventListener('pointerdown',()=>au());addEventListener('keydown',()=>au());
 show('ほしくず防衛隊',TTL,'ゲーム開始',1);
 requestAnimationFrame(loop);window.__ok=1;
