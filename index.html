@@ -498,7 +498,7 @@ const SCC={};function scr(){const s=gi(),k=s+'-'+di;return SCC[k]||(SCC[k]=[...S
 const MBN=['ガレオン','ブロッカー','テンペスト','カロネード','アヴァロン'],MHP=[90,145,195,260,365],
   MP=[['#a9c2ff','#1d2a66'],['#ffb09a','#5a1a10'],['#99ffdc','#0f4a3c'],['#ffdc96','#5a3d10'],['#ff98c8','#4a0f2a']],
   MC=[[140,180,255],[255,150,110],[120,255,210],[255,210,120],[255,120,180]];
-function midSpawn(){const T=gi();add({k:'z',st:T,x:W/2,y:-50,r:MR[T],mh:MHP[T],ty:112,nx:70,n:0,pts:500*(T+1)});sfx('warn');msg='警告！中型艦'+MBN[T]+'接近';mt=110}
+function midSpawn(){const T=gi();add({k:'z',st:T,x:W/2,y:-50,r:MR[T],mh:MHP[T]*1.1,ty:112,nx:70,n:0,pts:500*(T+1)});sfx('warn');msg='警告！中型艦'+MBN[T]+'接近';mt=110}
 const MPAT=[
   (f,x,y,a)=>{for(let i=-2;i<3;i++)fireA(x,y,a+i*.2,2.8);f.nx=70},
   (f,x,y)=>{for(let i=0;i<10;i++)fireA(x,y,i/10*TAU+f.n*.3,2.2);f.nx=80},
@@ -511,7 +511,7 @@ const MPAT=[
   (f,x,y,a)=>{for(const o of[-.4,0,.4]){fireA(x,y,a+o,2);const q=eb[eb.length-1];q.hm=100;q.ty=5}f.nx=90}];
 const MSEQ=[[0,1],[0,4,1],[2,3,2],[0,2,5],[0,1,2,5]];
 function midAI(f,dt){
-  if(f.a>1800){if(!f.esc){f.esc=1;pt.push({x:f.x,y:f.y+46,vx:0,vy:-.3,l:80,m:80,c:'#c8d0ff',txt:'中型艦が撤退した',fs:13})}f.y-=1.6*dt;return}
+  if(f.a>1980){if(!f.esc){f.esc=1;pt.push({x:f.x,y:f.y+46,vx:0,vy:-.3,l:80,m:80,c:'#c8d0ff',txt:'中型艦が撤退した',fs:13})}f.y-=1.6*dt;return}
   if(f.y<f.ty){f.y+=1.4*dt;f.fc=0;return}
   f.x+=(W/2+Math.sin(f.a/80)*90-f.x)*Math.min(1,.05*dt);
   if(f.fc>=f.nx){f.fc=0;f.n++;const y=f.y+20,q=MSEQ[f.st];MPAT[q[f.n%q.length]](f,f.x,y,aim(f.x,y))}}
