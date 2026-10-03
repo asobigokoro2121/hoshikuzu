@@ -929,7 +929,7 @@ function mv(f,dt){
     const p=f.hp/f.mh,ph=p>.66?0:p>.33?1:2;
     if(f.lph!=null&&ph>f.lph){shake=Math.max(shake,14);sfx('kill');bfl=8;pt.push({x:f.x,y:f.y,vx:0,vy:0,l:30,m:30,c:'#fff',ring:f.r*1.2,lw:5},{x:f.x,y:f.y,vx:0,vy:0,l:14,m:14,k:'f',sz:f.r*2.5});for(let i=0;i<5;i++)boom(f.x+(R()-.5)*f.r*2,f.y+(R()-.5)*f.r*1.5,YE,10)}f.lph=ph;
     if(p<.66&&R()<(p<.33?.35:.12)*dt){const ox=(R()-.5)*f.r*1.6,oy=(R()-.5)*f.r*1.2;pt.push({x:f.x+ox,y:f.y+oy,vx:(R()-.5)*.6,vy:.6+R()*.8,l:30,m:30,c:R()<.5?'#ff9f1c':'#8a8aa0',sz:R()<.5?3:5})}
-    if(f.rest>0){f.rest-=dt;if(f.rest<=0){f.rest=0;sfx('warn2')}}else{const y0=f.y;bossAI(f,dt*D().fr*GF());partsAI(f,dt*D().fr*GF());if(f.rest==null&&f.y<=y0&&f.a>5){f.rest=f.rm=180;clearEB(0)}}
+    if(f.rest>0){f.rest-=dt;if(f.rest<=0){f.rest=0;sfx('warn2')}}else{const y0=f.y;bossAI(f,dt*D().fr*GF());partsAI(f,dt*D().fr*GF());if(f.rest==null&&f.y<=y0&&f.a>5){f.rest=f.rm=300;clearEB(0)}}
   }
   else{f.x+=f.vx*dt;f.y+=f.vy*dt;if(f.rot!=null)f.rot+=f.vr*dt}
   if(k!='b'&&f.mh>=3&&f.hp<f.mh*.5&&R()<.18*dt)pt.push({x:f.x+(R()-.5)*f.r,y:f.y+(R()-.5)*f.r,vx:(R()-.5)*.4,vy:.5+R()*.5,l:22,m:22,k:'m',c:R()<.3?'#ff9f1c':'#5a5470',sz:2.5+R()*2,dg:.97});
