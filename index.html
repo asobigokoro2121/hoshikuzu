@@ -387,7 +387,7 @@ function start(){
 function over(v){
   st='over';clr=!!v;mt=0;bl=[];eb=[];
   const nb=!fr0&&score>best&&score>0;if(nb){best=score;try{localStorage.setItem(BK(),best)}catch(e){}}
-  let nu='';if(v&&!fr0&&co<3&&cu<co+1){cu=co+1;try{localStorage.setItem('hoshikuzu-cu',cu)}catch(e){}nu+='\n'+(cu>2?'EXステージ':'コース'+(cu+1))+'「'+CN[cu]+'」が解放されました！';coUI()}if(v&&!fr0&&di>=2&&!unl){unl=true;try{localStorage.setItem('hoshikuzu-unl','1')}catch(e){}nu+='\n「すごくむずかしい」が解放されました！';setDi(di)}
+  let nu='';if(v&&!PRC&&fr0!=99&&co<3&&cu<co+1){cu=co+1;try{localStorage.setItem('hoshikuzu-cu',cu)}catch(e){}nu+='\n'+(cu>2?'EXステージ':'コース'+(cu+1))+'「'+CN[cu]+'」が解放されました！';coUI()}if(v&&!PRC&&fr0!=99&&di>=2&&!unl){unl=true;try{localStorage.setItem('hoshikuzu-unl','1')}catch(e){}nu+='\n「すごくむずかしい」が解放されました！';setDi(di)}
   const sh2=v&&!fr0&&di==3;achOver(v);nu+=achNu();hud();if(v&&co>2&&!PRC&&!fr0){endGo(v,nb,nu,sh2);return}showResult(v,nb,nu);if(sh2){$('hint').hidden=false;$('hintS').textContent=sec?'（究極型は解放済みです）':''}
 }
 const SFT={};function soft(c){if(SFT[c])return SFT[c];const k=document.createElement('canvas');k.width=k.height=32;const g=k.getContext('2d'),gr=g.createRadialGradient(16,16,0,16,16,16);gr.addColorStop(0,c);gr.addColorStop(.45,c);gr.addColorStop(1,'rgba(0,0,0,0)');g.globalAlpha=1;g.fillStyle=gr;g.fillRect(0,0,32,32);return SFT[c]=k}
@@ -938,7 +938,7 @@ function mv(f,dt){
 }
 function upd(dt){
   t+=dt;prTick(dt);lv=(co>2?6:1+Math.min(stg,6)*.6+co*.5)+stT/3600;mt-=dt;
-  if(gO>0){gO-=dt;if(gO<=0){over();return}}
+  if(gO>0&&winT<=0&&!fo.some(f=>f.k=='b'&&f.dy>0)){gO-=dt;if(gO<=0){over();return}}
   if(sgPend&&tk>=.5){sgPend=0;msg='第'+(stg+1)+'面　'+sg().f;mt=110;{const hn=sg().hn||(sg().storm?'点線が光ったら放電！':sg().grav>=1?'重力井戸に引き込まれるな！':sg().fence>=1?'レーザー柵は隙間をくぐれ！':'');if(hn)pt.push({x:W/2,y:H/2-30,vx:0,vy:-.2,l:130,m:130,c:'#bffcff',txt:hn,fs:15})}}if(winT>0){winT-=dt;if(winT<=0){over(PRC&&!PRC.win?0:1);return}}
   const kx=(keys.arrowright||keys.d?1:0)-(keys.arrowleft||keys.a?1:0),ky=(keys.arrowdown||keys.s?1:0)-(keys.arrowup||keys.w?1:0);
   const iz=inFog(),fk=(fcs()?.45:1)*(iz?.5:1);ship.tx=cl(ship.tx+kx*SP().sp*fk*dt,14,W-14);ship.ty=cl(ship.ty+ky*SP().sp*fk*dt,70,H-26);
@@ -3198,7 +3198,7 @@ function loop(ts){
   if(NJ.length&&nebRows(NJ[0],12))NJ.shift();
   if(dsc<score){dsc=Math.min(score,dsc+Math.max(1,Math.ceil((score-dsc)*.18*dt)));$('hs').textContent=dsc.toLocaleString()}
   if(!ov.hidden&&!$('dsel').hidden&&(pvT+=dt)>3){pvT=0;shipPrev()}
-  if(st=='play'){let ud=dt;if(ph2>0){ph2-=dt;if(ph2<=0)applyHurt()}if(hs>0){hs-=dt;ud=dt*.15}upd(ud)}
+  if(st=='play'){let ud=dt;if(ph2>0){ph2-=dt;if(ph2<=0){if(winT>0){ph2=0;$('bb').classList.remove('urge')}else applyHurt()}}if(hs>0){hs-=dt;ud=dt*.15}upd(ud)}
   else if(st=='zk')zkTick(dt);else if(st=='end')endTick(dt);else if(st=='over'&&clr){if(R()<.035*dt)fw();ptUpd(dt);pt=pt.filter(q=>q.l>0&&!q.txt)}
   muTick();
   if(st=='play'&&(acT+=dt)>30){acT=0;achPlay()}{const pv=st=='play'||st=='pause';if(pv!==window.pbV){window.pbV=pv;$('pb').hidden=!pv}}
