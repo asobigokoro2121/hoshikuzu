@@ -55,6 +55,10 @@ rep("const c=+b.dataset.c;zkGo(c>2?42:c*14)}))","const c=+b.dataset.c;ZE=c>3?1:0
 rep("zkGo(co>2?42:co*14);navUI();","ZE=0;zkGo(co>2?42:co*14);navUI();")
 rep("const z=f.k=='z'?1.4:1;","const z=f.zs||(f.k=='z'?1.4:1);")
 rep("function zkTick(dt){t+=dt;for(const f of fo){f.a+=dt;","function zkTick(dt){t+=dt;for(const f of fo){f.a+=dt;if(ZE&&f.rot!=null)f.rot+=.02*dt;")
+# ---- normal and above: regular enemies a touch easier (bosses / mid-bosses unchanged)
+rep("f.fc+=dt*D().fr*GF()*(f.k=='z'||f.k=='b'?1:.88);","f.fc+=dt*D().fr*GF()*(f.k=='z'||f.k=='b'?1:di?.83:.88);")
+rep("&&R()<(di?.24:.12))continue;WV[op]","&&R()<(di?.27:.12))continue;WV[op]")
+rep("(bo||mid?3.6:di?3.05:2.7)","(bo||mid?3.6:di?3.2:2.7)")
 # ---- HTML
 rep('<p id="stn"></p>','<button id="rsh" type="button" aria-pressed="false">ボスラッシュ</button><p id="stn"></p>')
 rep('<button type="button" role="tab" data-c="3">EX</button></div>','<button type="button" role="tab" data-c="3">EX</button><button type="button" role="tab" data-c="4">雑魚敵</button></div>')
