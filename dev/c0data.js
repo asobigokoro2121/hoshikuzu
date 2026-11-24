@@ -3,6 +3,7 @@
 // internal course order: 0 宇宙へ / 1 銀河航路 / 2 氷晶星雲 / 3 紅蓮星域 / 4 EX
 function CK(c){return c==0?4:c-1}                       // save-key id (old ids kept, new course = 4)
 function CKI(k){return k==4?0:k>=0&&k<=3?k+1:0}
+function TT(c){return c==0?0:TB(c)}                         // title-screen background (宇宙へ keeps the space one)
 function TB(c){return c==0?22:c>3?21:(c-1)*7}           // first global stage index of a course
 function LT(T){return T==21||(T>21?T==28:T%7==6)}       // final boss of a course
 function THC(i){return i>=22?0:i==21?4:(i/7|0)+1}       // course of a theme / stage index

@@ -14,7 +14,10 @@ RS("const BK=()=>co?'hs2-best-c'+co+'-'+di:'hs2-best-'+di,RK=()=>co?'hs2-reach-c
 # --- course select
 RS("b.title=c>cu?(c>2?'全コースをクリアで解放':'コース'+c+'をクリアで解放'):'';b.innerHTML='<small>'+(c>2?'EXTRA':'COURSE '+(c+1))+'</small>'+(c>cu?'🔒 '+(c>2?'？？？':CN[c]):CN[c])});$('stp').hidden=co>2",
    "b.title=c>cu?(c>3?'全コースをクリアで解放':'コース'+c+'をクリアで解放'):'';b.innerHTML='<small>'+(c>3?'EXTRA':'COURSE '+(c+1))+'</small>'+(c>cu?'🔒 '+(c>3?'？？？':CN[c]):CN[c])});$('stp').hidden=co>3")
-RS("thA=thB=co*7","thA=thB=TB(co)",4)
+RS("if(st=='title'){stg=0;thA=thB=co*7;","if(st=='title'){stg=0;thA=thB=TT(co);")
+RS("stg=0;thA=thB=co*7;tk=1;hud();show(","stg=0;thA=thB=TT(co);tk=1;hud();show(")
+RS("fr0=ss;thA=thB=co*7;","fr0=ss;thA=thB=TB(co);")
+RS("secUI();coUI();thA=thB=co*7;","secUI();coUI();thA=thB=TT(co);")
 RS('<button type="button" role="radio" data-c="3"></button></div>','<button type="button" role="radio" data-c="3"></button><button type="button" role="radio" data-c="4"></button></div>')
 RS('#cos{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;width:min(100%,340px)}#cos button[data-c="3"]{border-color:#7a5ab8}#cos button[data-c="3"][aria-checked="true"]',
    '#cos{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;width:min(100%,350px)}#cos button[data-c="4"]{border-color:#7a5ab8}#cos button[data-c="4"][aria-checked="true"]')
@@ -39,7 +42,7 @@ RS("stT>=(co>2?3600:3300)){bsp=1","stT>=(co>3?3600:3300)){bsp=1")
 RS("*1.32*1.07*1.05*.95*(co>2?1.25:1)","*1.32*1.07*1.05*.95*(co>3?1.25:1)")
 RS("let k='r';if(!bo){","let k=co==0?'Q':'r';if(!bo){")
 RS("NJ.sort((a,b)=>((a.i/7|0)!=co)-((b.i/7|0)!=co)||a.i-b.i)","NJ.sort((a,b)=>(THC(a.i)!=co)-(THC(b.i)!=co)||a.i-b.i)")
-RS("{const j=nebJob(co*7);nebRows(j,TWY)}for(let i=0;i<TH.length;i++)if(i!=co*7)","{const j=nebJob(TB(co));nebRows(j,TWY)}for(let i=0;i<TH.length;i++)if(i!=TB(co))")
+RS("{const j=nebJob(co*7);nebRows(j,TWY)}for(let i=0;i<TH.length;i++)if(i!=co*7)","{const j=nebJob(TT(co));nebRows(j,TWY)}for(let i=0;i<TH.length;i++)if(i!=TT(co))")
 RS("cx.fillStyle=['#c8d0ff','#bff3ff','#ffc29a'][co];","cx.fillStyle=['#d4f5b8','#c8d0ff','#bff3ff','#ffc29a','#e0c8ff'][co];")
 RS("if(st=='zk')zkDraw(F);else for(const f of fo)F[f.k](f);","if(st=='zk')zkDraw(F);else{for(const f of fo)if(f.gd)F[f.k](f);for(const f of fo)if(!f.gd)F[f.k](f)}")
 RS("dist+=dt*(st=='play'?1:.4)*(1+wp*3);","{const _d=dt*(st=='play'?1:.4)*(1+wp*3);dist+=_d;GY+=_d*GSP()}")
