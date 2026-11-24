@@ -55,7 +55,7 @@ function gFarm(ci,r){const top=(ci+1)*GCH;
   for(let i=0;i<3;i++)if(r()<.6){const ly=16+r()*(GCH-32),s=r()<.5?-1:1,X=gRoadX(top-ly)+s*(20+r()*16);gHouse(X,ly,13,10,r()<.5?['#8a5a46','#a8705a']:['#6e7480','#8c93a0'])}
   if(ci<=1)gBase(ci,r)}
 function gRoadPath(top,x){cx.beginPath();for(let ly=-12;ly<=GCH+12;ly+=6){const X=x(top-ly);ly>-12?cx.lineTo(X,ly):cx.moveTo(X,ly)}cx.stroke()}
-function gRiverX(wy){return W*.5+95*Math.sin(wy/520+1.3)+30*Math.sin(wy/180)}
+function gRiverX(wy){return W*.5+46*Math.sin(wy/620+1.3)+14*Math.sin(wy/230)}
 function gCoastX(wy){return 125+40*Math.sin(wy/500)+16*Math.sin(wy/170)}
 const RAILX=W-58,AVX=[54,168,262];
 function gPathPts(top,fx){const P=[];for(let ly=-14;ly<=GCH+14;ly+=6)P.push([fx(top-ly),ly]);return P}
@@ -65,11 +65,12 @@ function gTree(x,y,rr,c){cx.fillStyle='rgba(6,14,6,.4)';cx.beginPath();cx.arc(x+
 function gForest(ci,r){const top=(ci+1)*GCH,rv=wy=>gRiverX(wy);
   cx.fillStyle='#1d3619';cx.fillRect(-12,0,W+24,GCH);
   for(let i=0;i<3;i++){const x=r()*W,y=20+r()*(GCH-40);cx.fillStyle='#3e5e30';cx.beginPath();cx.ellipse(x,y,26+r()*30,14+r()*14,r()*3,0,TAU);cx.fill()}
-  const P=gPathPts(top,rv);gStroke(P,48,'#4a5a34');gStroke(P,38,'#24506e');gStroke(P,22,'#2f6485');gStroke(P,6,'rgba(150,200,230,.22)');
+  const P=gPathPts(top,rv);gStroke(P,176,'#4a5a34');gStroke(P,164,'#c8b888');gStroke(P,152,'#22506e');gStroke(P,110,'#285a7a');gStroke(P,56,'#2f6485');
+  cx.strokeStyle='rgba(170,210,235,.16)';cx.lineWidth=1.2;for(let i=0;i<26;i++){const ly=r()*GCH,X=rv(top-ly)+(r()-.5)*130;cx.beginPath();cx.moveTo(X-8,ly);cx.lineTo(X+8,ly);cx.stroke()}
   const TC=['#264820','#2e5427','#22421d','#35602d','#2a4e24'];
-  for(let i=0;i<300;i++){const x=-10+r()*(W+20),y=6+r()*(GCH-12);if(Math.abs(x-rv(top-y))<30)continue;gTree(x,y,4.5+r()*5,TC[r()*TC.length|0])}
+  for(let i=0;i<300;i++){const x=-10+r()*(W+20),y=6+r()*(GCH-12);if(Math.abs(x-rv(top-y))<90)continue;gTree(x,y,4.5+r()*5,TC[r()*TC.length|0])}
   if(r()<.45){const y=30+r()*(GCH-60),X=rv(top-y);cx.fillStyle='#6a5a3e';cx.fillRect(-12,y-4.5,W+24,9);cx.fillStyle='#8a7a58';cx.fillRect(-12,y-3,W+24,6);
-    cx.fillStyle='#8a8c86';cx.fillRect(X-28,y-6,56,12);cx.strokeStyle='#3a3c38';cx.lineWidth=1.2;cx.strokeRect(X-28,y-6,56,12);cx.fillStyle='#5a5c58';for(let k=-24;k<=24;k+=8)cx.fillRect(X+k-1,y-6,2,12)}}
+    cx.fillStyle='rgba(0,10,20,.35)';cx.fillRect(X-84,y-3,168,14);cx.fillStyle='#8a8c86';cx.fillRect(X-86,y-6,172,12);cx.strokeStyle='#3a3c38';cx.lineWidth=1.2;cx.strokeRect(X-86,y-6,172,12);cx.fillStyle='#5a5c58';for(let k=-80;k<=80;k+=10)cx.fillRect(X+k-1,y-6,2,12);cx.fillStyle='#4a4c48';for(let k=-60;k<=60;k+=40)cx.fillRect(X+k-3,y+6,6,5)}}
 // stage 3: 海峡
 function gCoast(ci,r){const top=(ci+1)*GCH,cs=wy=>gCoastX(wy);
   const sg=cx.createLinearGradient(0,0,W,0);sg.addColorStop(0,'#2a6a8a');sg.addColorStop(.5,'#1c4c72');sg.addColorStop(1,'#163e62');cx.fillStyle=sg;cx.fillRect(-12,0,W+24,GCH);

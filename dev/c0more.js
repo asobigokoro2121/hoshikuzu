@@ -8,7 +8,7 @@ function seaX(x){return thB==24?cl(x,gCoastX(gWy(-30))+40,W-26):x}
 function railCars(n){let o;for(let i=0;i<n;i++)o=add({k:'S',x:RAILX,y:-26-i*30,r:12,mh:8,pts:120,gd:1,nc:1,car:i==0?0:i==1?1:2,nx:90+i*30});return o}
 Object.assign(EMK,{
  F:(x,y)=>add({k:'F',x:landX(cl(x,24,W-24)),y:Math.min(y,-16),r:12,mh:7,pts:120,gd:1,nc:1,ba:Math.PI/2,nx:70+R()*50,bs:0,bt2:0}),
- V:(x,y)=>add({k:'V',x:seaX(x),y:Math.min(y,-20),r:11,mh:6,pts:110,gd:1,nc:1,v:.35+R()*.3,off:(R()-.5)*10,hd:Math.PI/2,ta:Math.PI/2,nx:80+R()*60}),
+ V:(x,y)=>add({k:'V',x:seaX(x),y:Math.min(y,-20),r:11,mh:6,pts:110,gd:1,nc:1,v:.35+R()*.3,off:(R()-.5)*100,hd:Math.PI/2,ta:Math.PI/2,nx:80+R()*60}),
  G:(x,y)=>add({k:'G',x:seaX(cl(x,40,W-40)),y:Math.min(y,-50),r:20,mh:22,pts:400,gd:1,nc:1,tA:Math.PI/2,tB:Math.PI/2,nx:90,n:0}),
  L:(x,y)=>add({k:'L',x:landX(cl(x,24,W-24)),y:Math.min(y,-22),r:16,mh:16,pts:260,gd:1,nc:1,ba:Math.PI/2,nx:110+R()*40}),
  R:(x,y)=>{const xx=cl(x,30,RAILX-30),c=AVX.find(a=>Math.abs(a-xx)<20);return add({k:'R',x:c!=null?c+(xx<c?-24:24):xx,y:Math.min(y,-18),r:13,mh:10,pts:180,gd:1,nc:1,ba:Math.PI/2,nx:110+R()*40})},
@@ -25,20 +25,20 @@ function mvV(f,dt){const oy=f.y,ox=f.x;f.y+=GD+f.v*dt;if(thB==23)f.x=gRiverX(gWy
   f.hd=Math.atan2(f.v*dt,f.x-ox||1e-6);f.ta=gTurn(f.ta,aim(f.x,f.y),.05*dt);f.wk=(f.wk||0)+dt;
   if(gOn(f)&&f.fc>=f.nx&&gAimOk(f.ta,aim(f.x,f.y))){f.fc=0;f.nx=150;f.mf=6;fireA(f.x,f.y,f.ta,2.6)}f.mf=(f.mf||0)-dt}
 function mvG(f,dt){f.y+=GD+.22*dt;const PA={x:f.x,y:f.y+24},PB={x:f.x,y:f.y-20};f.tA=gTurn(f.tA,aim(PA.x,PA.y),.04*dt);f.tB=gTurn(f.tB,aim(PB.x,PB.y),.04*dt);f.mf=(f.mf||0)-dt;
-  if(gOn(f)&&f.fc>=f.nx){f.fc=0;f.n++;f.nx=f.n%3?70:120;f.mf=6;const P=f.n%2?PA:PB,a=f.n%2?f.tA:f.tB;for(const o of[-.1,.1])fireS(10,P.x+Math.cos(a)*14,P.y+Math.sin(a)*14,a+o,2.5)}}
+  if(gOn(f)&&f.fc>=f.nx){f.fc=0;f.n++;f.nx=f.n%3?70:120;f.mf=6;const P=f.n%2?PA:PB,a=f.n%2?f.tA:f.tB;if(f.n%3==0){for(const o of[-.35,.35])msl(f.x,f.y-34,aim(f.x,f.y-34)+o,1.8,o>0?1:0)}else for(const o of[-.1,.1])fireS(10,P.x+Math.cos(a)*14,P.y+Math.sin(a)*14,a+o,2.5)}}
 function mvL(f,dt){f.y+=GD;f.ba=gTurn(f.ba,aim(f.x,f.y),.03*dt);f.mf=(f.mf||0)-dt;f.wn=gOn(f)&&f.fc>=f.nx-30;
-  if(gOn(f)&&f.fc>=f.nx&&gAimOk(f.ba,aim(f.x,f.y))){f.fc=0;f.nx=200;f.mf=10;for(let i=-2;i<=2;i++)fireS(10,f.x+Math.cos(f.ba)*22,f.y+Math.sin(f.ba)*22,f.ba+i*.17,2.1)}}
+  if(gOn(f)&&f.fc>=f.nx&&gAimOk(f.ba,aim(f.x,f.y))){f.fc=0;f.nx=200;f.mf=10;f.n=(f.n||0)+1;const X=f.x+Math.cos(f.ba)*22,Y=f.y+Math.sin(f.ba)*22;if(f.n%2==0)msl(X,Y,f.ba,1.35,2);else for(let i=-2;i<=2;i++)fireS(10,X,Y,f.ba+i*.17,2.1)}}
 function mvR(f,dt){f.y+=GD;f.ba=gTurn(f.ba,aim(f.x,f.y),.03*dt);f.mf=(f.mf||0)-dt;f.wn=gOn(f)&&f.fc>=f.nx-34;
-  if(gOn(f)&&f.fc>=f.nx){f.fc=0;f.nx=200;f.mf=12;for(const o of[-.16,.16])fireS(11,f.x+Math.cos(f.ba)*10,f.y+Math.sin(f.ba)*10,f.ba+o,2)}}
+  if(gOn(f)&&f.fc>=f.nx){f.fc=0;f.nx=200;f.mf=12;f.n=(f.n||0)+1;const X=f.x+Math.cos(f.ba)*10,Y=f.y+Math.sin(f.ba)*10;if(f.n%3==0)msl(X,Y,f.ba,1.35,2);else for(const o of[-.16,.16])msl(X,Y,f.ba+o,1.9,f.n%3==2?1:0)}}
 function mvS(f,dt){f.y+=GD+1.1*dt;f.x=RAILX;f.mf=(f.mf||0)-dt;f.ta=gTurn(f.ta??Math.PI/2,aim(f.x,f.y),.05*dt);
   if(f.car==1&&gOn(f)&&f.fc>=f.nx){f.fc=0;f.nx=110;f.mf=6;fireS(10,f.x,f.y,f.ta,2.6)}
-  if(f.car==2&&gOn(f)&&f.fc>=f.nx){f.fc=0;f.nx=140;for(const o of[-.25,0,.25])fireS(12,f.x,f.y,aim(f.x,f.y)+o,2.4)}}
+  if(f.car==2&&gOn(f)&&f.fc>=f.nx){f.fc=0;f.nx=160;for(const o of[-.3,.3])msl(f.x,f.y,aim(f.x,f.y)+o,1.8,1)}}
 function mvT(f,dt){f.y+=GD;f.ba=gTurn(f.ba,aim(f.x,f.y),.04*dt);f.mf=(f.mf||0)-dt;
-  if(gOn(f)&&f.fc>=f.nx&&gAimOk(f.ba,aim(f.x,f.y))){f.fc=0;f.nx=195;f.mf=7;for(const o of[-.2,0,.2])fireS(10,f.x+Math.cos(f.ba)*15,f.y+Math.sin(f.ba)*15,f.ba+o,2.4)}}
+  if(gOn(f)&&f.fc>=f.nx&&gAimOk(f.ba,aim(f.x,f.y))){f.fc=0;f.nx=195;f.mf=7;f.n=(f.n||0)+1;const X=f.x+Math.cos(f.ba)*15,Y=f.y+Math.sin(f.ba)*15;if(f.n%2==0)msl(X,Y,f.ba,1.8,1);else for(const o of[-.2,0,.2])fireS(10,X,Y,f.ba+o,2.4)}}
 function mvY(f,dt){f.y+=f.vy*dt;f.x+=Math.sin(f.a/90)*.25*dt;f.pr=(f.pr||0)+dt;
-  if(f.y>20&&f.y<H*.65&&f.fc>=f.nx){f.fc=0;f.n++;f.nx=200;if(f.n%2)for(let i=0;i<10;i++)fireS(12,f.x,f.y+10,i/10*TAU+f.n*.3,1.9);else mkEn('U',f.x,f.y)}}
+  if(f.y>20&&f.y<H*.65&&f.fc>=f.nx){f.fc=0;f.n++;f.nx=200;const m=f.n%3;if(m==1)for(let i=0;i<10;i++)fireS(12,f.x,f.y+10,i/10*TAU+f.n*.3,1.9);else if(m==2)for(const o of[-.6,-.2,.2,.6])msl(f.x,f.y+20,aim(f.x,f.y+20)+o,1.8,Math.abs(o)<.3?1:0);else mkEn('U',f.x,f.y)}}
 function mvW(f,dt){f.y+=GD;f.ba=gTurn(f.ba,aim(f.x,f.y),.05*dt);f.mf=(f.mf||0)-dt;f.rt=(f.rt||0)+dt;
-  if(gOn(f)&&f.fc>=f.nx&&gAimOk(f.ba,aim(f.x,f.y))){f.fc=0;f.n++;f.nx=185;f.mf=6;if(f.n%3)for(const o of[-.1,.1])fireS(10,f.x,f.y,f.ba+o,2.6);else for(let i=0;i<8;i++)fireS(12,f.x,f.y,i/8*TAU+f.rt*.02,1.9)}}
+  if(gOn(f)&&f.fc>=f.nx&&gAimOk(f.ba,aim(f.x,f.y))){f.fc=0;f.n++;f.nx=185;f.mf=6;const m=f.n%3;if(m==1)for(const o of[-.1,.1])fireS(10,f.x,f.y,f.ba+o,2.6);else if(m==2)for(const o of[-.3,.3])msl(f.x,f.y,f.ba+o,1.8,1);else for(let i=0;i<8;i++)fireS(12,f.x,f.y,i/8*TAU+f.rt*.02,1.9)}}
 function mvX(f,dt){f.y+=GD+f.v*dt;f.x=W/2;f.sp2+=.05*dt;
   if(gOn(f)&&f.fc>=f.nx){f.fc=0;f.nx=185;for(let i=0;i<6;i++)fireS(12,f.x,f.y,i/6*TAU+f.sp2,2)}}
 function mvZ(f,dt){f.y+=GD;f.rt+=.012*dt;
@@ -159,7 +159,7 @@ function bTur(f,q){return{x:f.x+q.ox,y:f.y+q.oy}}
 function pdGms2(f,q,P){const bl=q.t<30&&Math.floor(t/4)%2;rrp(-q.r,-q.r*.8,q.r*2,q.r*1.6,3);cx.fillStyle=q.fl>0?'#fff':'#4a525e';cx.fill();gOut(2);
   for(let i=0;i<4;i++){cx.fillStyle=bl?'#ffd166':'#f2f4f6';cx.fillRect(-q.r+3+i*(q.r*2-6)/4,-q.r*.5,3,q.r);cx.fillStyle='#e23a48';cx.fillRect(-q.r+3+i*(q.r*2-6)/4,q.r*.4,3,2.4)}if(bl)glow(0,0,q.r*1.6,[255,160,80],.7)}
 Object.assign(PDRAW,{gms2:pdGms2});
-Object.assign(PFIRE,{gms2:(f,q,P,a)=>{for(const o of[-.3,.3])fireS(11,P.x,P.y,a+o,2)}});
+Object.assign(PFIRE,{gms2:(f,q,P,a)=>{q.n2=(q.n2||0)+1;if(q.n2%3==0)msl(P.x,P.y,a,1.35,2);else for(const o of[-.3,.3])msl(P.x,P.y,a+o,1.9,o>0?1:0)}});
 function legs(f,n,L,sp,w){for(const s2 of[-1,1])for(let i=0;i<n;i++){const ph=f.a/sp+i*2.1+(s2>0?Math.PI:0),y0=-30+i*30,kx=s2*(L*.6),ky=y0+Math.sin(ph)*6,fx=s2*L,fy=y0+Math.sin(ph)*14-8;
   cx.lineCap='round';cx.strokeStyle='#0e1014';cx.lineWidth=9;cx.beginPath();cx.moveTo(s2*16,y0*.6);cx.lineTo(kx,ky-10);cx.lineTo(fx,fy);cx.stroke();cx.strokeStyle=w?'#fff':'#5a6270';cx.lineWidth=5.5;cx.stroke();
   cx.fillStyle='#2a2e36';cx.beginPath();cx.arc(kx,ky-10,4.5,0,TAU);cx.fill();cx.fillStyle='#ff5d73';cx.beginPath();cx.arc(fx,fy,2.4,0,TAU);cx.fill()}}
@@ -175,7 +175,7 @@ function arcAI(b,dt){b.nc=1;b.gd=1;if(bEnter(b,dt,124,.85))return;b.x=W/2+Math.s
   for(const q of live(b,'gtr')){const P=partPos(b,q);q.ba=gTurn(q.ba??Math.PI/2,aim(P.x,P.y),.05*dt)}
   if(b.t>0)return;b.n++;const p=b.hp/b.mh,x=b.x,y=b.y+50,a=aim(x,y);
   if(p>.66){b.t=90;if(b.n%2)for(let i=-2;i<=2;i++)fireS(10,x,y,a+i*.2,2.8);else for(const s2 of[-1,1])for(let i=0;i<6;i++)fireS(13,b.x+s2*70,b.y-8,i/6*TAU+b.n*.3,1.8)}
-  else if(p>.33){b.t=76;const m=b.n%3;if(m==0)for(let i=-3;i<=3;i++)fireS(10,x,y,a+i*.15,2.9);else if(m==1){for(const s2 of[-1,1])for(let i=0;i<6;i++)fireS(13,b.x+s2*70,b.y+20,i/7*TAU+b.n*.2,1.9)}else{for(let i=0;i<9;i++)fireS(12,cl(b.x-96+i*24,10,W-10),b.y+30,Math.PI/2,1.7,{ws:1,wf:.06,wt:i*9})}}
+  else if(p>.33){b.t=76;const m=b.n%3;if(m==0)for(let i=-3;i<=3;i++)fireS(10,x,y,a+i*.15,2.9);else if(m==1){for(const s2 of[-1,1])for(let i=0;i<6;i++)fireS(13,b.x+s2*70,b.y+20,i/6*TAU+b.n*.2,1.9)}else{for(let i=0;i<9;i++)fireS(12,cl(b.x-96+i*24,10,W-10),b.y+30,Math.PI/2,1.7,{ws:1,wf:.06,wt:i*9})}}
   else{b.t=21;fireS(10,x,y,a+Math.sin(b.n*.4)*.6,3);if(b.n%8==0)for(const s2 of[-1,1])for(let i=0;i<7;i++)fireS(13,b.x+s2*70,b.y,i/7*TAU,2)}}
 function poseidon(f,p,pc,c,pu,M){cx.fillStyle='rgba(235,245,255,.3)';poly([[-24,-90],[24,-90],[46,-140],[-46,-140]]);cx.fill();
   const P=[[0,96],[30,58],[36,-60],[26,-92],[-26,-92],[-36,-60],[-30,58]];poly(P);const g=cx.createLinearGradient(-36,0,36,0);g.addColorStop(0,'#323c48');g.addColorStop(.5,'#7a8896');g.addColorStop(1,'#323c48');cx.fillStyle=g;cx.fill();gOut(3);
@@ -187,8 +187,8 @@ function poseidon(f,p,pc,c,pu,M){cx.fillStyle='rgba(235,245,255,.3)';poly([[-24,
 function posAI(b,dt){b.nc=1;b.gd=1;if(bEnter(b,dt,110,.8))return;b.x=W/2+Math.sin(b.a/170)*40;b.ta=gTurn(b.ta??Math.PI/2,aim(b.x,b.y+50),.035*dt);b.mf=(b.mf||0)-dt;
   for(const q of live(b,'gtr')){const P=partPos(b,q);q.ba=gTurn(q.ba??Math.PI/2,aim(P.x,P.y),.05*dt)}
   b.t-=dt;if(b.t>0)return;b.n++;const p=b.hp/b.mh,x=b.x+Math.cos(b.ta)*48,y=b.y+50+Math.sin(b.ta)*48,a=b.ta;b.mf=8;
-  if(p>.66){b.t=80;if(b.n%2)for(let i=-3;i<=3;i++)fireS(10,x,y,a+i*.16,2.7);else for(let i=0;i<14;i++)fireS(10,b.x,b.y,i/14*TAU+b.n*.2,2)}
-  else if(p>.33){b.t=66;const m=b.n%3;if(m==0)for(let i=-3;i<=3;i++)fireS(10,x,y,a+i*.15,2.9);else if(m==1){for(const s2 of[-1,1])for(let i=0;i<5;i++)fireS(10,b.x+s2*36,b.y+i*24-40,Math.PI/2+s2*(.9-i*.12),2.2)}else{mortar(ship.x,ship.y,80,7);b.t=50}}
+  if(p>.66){b.t=80;const m=b.n%3;if(m==1)for(let i=-3;i<=3;i++)fireS(10,x,y,a+i*.16,2.7);else if(m==2)for(let i=0;i<14;i++)fireS(10,b.x,b.y,i/14*TAU+b.n*.2,2);else for(const s2 of[-1,1])for(let k=0;k<2;k++)msl(b.x+s2*30,b.y-20+k*30,Math.PI/2+s2*(.8-k*.3),1.8,k)}
+  else if(p>.33){b.t=66;const m=b.n%3;if(m==0)for(let i=-3;i<=3;i++)fireS(10,x,y,a+i*.15,2.9);else if(m==1){for(const s2 of[-1,1])for(let i=0;i<5;i++)fireS(10,b.x+s2*36,b.y+i*24-40,Math.PI/2+s2*(.9-i*.12),2.2)}else{mortar(ship.x,ship.y,80,7);msl(b.x,b.y+60,a,1.35,2);b.t=50}}
   else{b.t=18;fireS(10,x,y,a+Math.sin(b.n*.5)*.5,3);if(b.n%7==0)for(let i=0;i<12;i++)fireS(10,b.x,b.y,i/12*TAU+b.n*.1,2.1);if(b.n%11==0)mortar(ship.x,ship.y,80,8)}}
 function gigantes(f,p,pc,c,pu,M){const ph=Math.sin(f.a/22);
   for(const s2 of[-1,1]){const fy=s2*ph*14;rrp(s2*26-12,-6+fy,24,40,6);cx.fillStyle='#3a414c';cx.fill();gOut(2.4);rrp(s2*26-14,28+fy,28,16,5);cx.fillStyle='#22262c';cx.fill();gOut(2)}
@@ -202,9 +202,9 @@ function gigantes(f,p,pc,c,pu,M){const ph=Math.sin(f.a/22);
 function gigAI(b,dt){b.nc=1;b.gd=1;if(bEnter(b,dt,124,.8))return;b.x=W/2+Math.sin(b.a/110)*64;b.t-=dt;
   for(const q of live(b,'gtr')){const P=partPos(b,q);q.ba=gTurn(q.ba??Math.PI/2,aim(P.x,P.y),.05*dt)}
   if(b.t>0)return;b.n++;const p=b.hp/b.mh,a=aim(b.x,b.y+20);
-  if(p>.66){b.t=76;if(b.n%2){for(const s2 of[-1,1])for(let i=0;i<4;i++)fireS(10,b.x+s2*56,b.y+42,Math.PI/2+s2*(i-1.5)*.18,2.6)}else for(const o of[-.4,-.13,.13,.4])fireS(11,b.x,b.y-50,a+o,2)}
-  else if(p>.33){b.t=60;const m=b.n%3;if(m==0)for(let i=0;i<16;i++)fireS(10,b.x,b.y,i/16*TAU+b.n*.2,2.1);else if(m==1){for(const o of[-.45,-.15,.15,.45])fireS(11,b.x,b.y-50,a+o,2.1)}else{mortar(ship.x,ship.y,76,7);mortar(cl(ship.x+(ship.x<W/2?100:-100),20,W-20),ship.y-30,90,7)}}
-  else{b.t=14;const s2=b.n%2?1:-1;fireS(10,b.x+s2*56,b.y+42,a+Math.sin(b.n*.3)*.5,3);if(b.n%9==0)for(const o of[-.4,0,.4])fireS(11,b.x,b.y-50,a+o,2.2)}}
+  if(p>.66){b.t=76;if(b.n%2){for(const s2 of[-1,1])for(let i=0;i<4;i++)fireS(10,b.x+s2*56,b.y+42,Math.PI/2+s2*(i-1.5)*.18,2.6)}else for(const o of[-.4,-.13,.13,.4])msl(b.x,b.y-50,a+o,1.9,Math.abs(o)<.2?1:0)}
+  else if(p>.33){b.t=60;const m=b.n%3;if(m==0)for(let i=0;i<16;i++)fireS(10,b.x,b.y,i/16*TAU+b.n*.2,2.1);else if(m==1){for(const o of[-.45,-.15,.15,.45])msl(b.x,b.y-50,a+o,1.9,1);msl(b.x,b.y-50,a,1.35,2)}else{mortar(ship.x,ship.y,76,7);mortar(cl(ship.x+(ship.x<W/2?100:-100),20,W-20),ship.y-30,90,7)}}
+  else{b.t=14;const s2=b.n%2?1:-1;fireS(10,b.x+s2*56,b.y+42,a+Math.sin(b.n*.3)*.5,3);if(b.n%9==0)for(const o of[-.4,0,.4])msl(b.x,b.y-50,a+o,1.9,o?0:1)}}
 function olympus(f,p,pc,c,pu,M){const P=[[-90,30],[-70,-30],[-40,-64],[0,-80],[44,-62],[80,-24],[92,30],[50,62],[-46,64]];
   cx.fillStyle='rgba(60,70,90,.35)';cx.beginPath();cx.ellipse(14,40,104,44,0,0,TAU);cx.fill();poly(P);cx.fillStyle='#6e727c';cx.fill();gOut(3);
   cx.save();poly(P);cx.clip();cx.fillStyle='#4e525c';poly([[0,-80],[92,30],[50,62],[10,0]]);cx.fill();cx.fillStyle='#f0f4f8';poly([[-40,-64],[0,-80],[44,-62],[20,-50],[0,-58],[-22,-48]]);cx.fill();cx.restore();
@@ -216,9 +216,9 @@ function olympus(f,p,pc,c,pu,M){const P=[[-90,30],[-70,-30],[-40,-64],[0,-80],[4
 function olyAI(b,dt){b.nc=1;b.gd=1;if(bEnter(b,dt,130,.7))return;b.x+=(W/2-b.x)*.05*dt;b.ta=gTurn(b.ta??Math.PI/2,aim(b.x,b.y),.03*dt);b.mf=(b.mf||0)-dt;
   for(const q of live(b,'gtr')){const P=partPos(b,q);q.ba=gTurn(q.ba??Math.PI/2,aim(P.x,P.y),.05*dt)}
   b.t-=dt;if(b.t>0)return;b.n++;const p=b.hp/b.mh,x=b.x+Math.cos(b.ta)*56,y=b.y+Math.sin(b.ta)*56,a=b.ta;b.mf=8;
-  if(p>.66){b.t=94;const m=b.n%3;if(m==0)for(let i=-3;i<=3;i++)fireS(10,x,y,a+i*.17,2.7);else if(m==1)for(let i=0;i<13;i++)fireS(12,b.x,b.y,i/16*TAU+b.n*.2,1.9);else{mortar(ship.x,ship.y,80,8);b.t=60}}
-  else if(p>.33){b.t=80;const m=b.n%3;if(m==0)for(let i=-3;i<=3;i++)fireS(10,x,y,a+i*.16,2.8);else if(m==1){for(let i=0;i<15;i++)fireS(12,b.x,b.y,i/18*TAU+b.n*.13,2)}else{mortar(ship.x,ship.y,76,8);mortar(cl(ship.x+(ship.x<W/2?95:-95),20,W-20),ship.y,90,8)}}
-  else{b.t=18;fireS(12,b.x,b.y,b.n*.37,2.2);fireS(12,b.x,b.y,b.n*.37+Math.PI,2.2);if(b.n%10==0)for(let i=-2;i<=2;i++)fireS(10,x,y,a+i*.2,2.9);if(b.n%16==0)mortar(ship.x,ship.y,80,8)}}
+  if(p>.66){b.t=94;const m=b.n%3;if(m==0)for(let i=-3;i<=3;i++)fireS(10,x,y,a+i*.17,2.7);else if(m==1){for(const s2 of[-1,1])for(const o of[-.2,.2])msl(b.x+s2*40,b.y-40,Math.PI/2+s2*.7+o,1.8,o>0?1:0)}else{mortar(ship.x,ship.y,80,8);b.t=60}}
+  else if(p>.33){b.t=80;const m=b.n%3;if(m==0)for(let i=-3;i<=3;i++)fireS(10,x,y,a+i*.16,2.8);else if(m==1){for(let i=0;i<15;i++)fireS(12,b.x,b.y,i/15*TAU+b.n*.13,2)}else{mortar(ship.x,ship.y,76,8);mortar(cl(ship.x+(ship.x<W/2?95:-95),20,W-20),ship.y,90,8)}}
+  else{b.t=18;fireS(12,b.x,b.y,b.n*.37,2.2);fireS(12,b.x,b.y,b.n*.37+Math.PI,2.2);if(b.n%10==0)for(let i=-2;i<=2;i++)fireS(10,x,y,a+i*.2,2.9);if(b.n%16==0)mortar(ship.x,ship.y,80,8);if(b.n%13==6)for(const s2 of[-1,1])msl(b.x+s2*40,b.y-40,Math.PI/2+s2*.6,1.8,1)}}
 function babel(f,p,pc,c,pu,M){const x=0;cx.fillStyle='#8a929c';cx.fillRect(-4,-140,8,280);
   for(const y of[-52,52]){rrp(-60,y-8,120,16,6);cx.fillStyle='#3a414c';cx.fill();gOut(2.4);for(let i=-2;i<=2;i++){cx.fillStyle=Math.floor(t/10+i)%2?'#ffd166':'#5a4a22';cx.fillRect(i*22-3,y-3,6,6)}}
   poly(hp(0,0,50,8,Math.PI/8));const g=cx.createLinearGradient(-50,0,50,0);g.addColorStop(0,'#3a4450');g.addColorStop(.5,'#b0bac8');g.addColorStop(1,'#3a4450');cx.fillStyle=g;cx.fill();gOut(3);
@@ -228,8 +228,8 @@ function babel(f,p,pc,c,pu,M){const x=0;cx.fillStyle='#8a929c';cx.fillRect(-4,-1
 function babAI(b,dt){b.nc=1;b.gd=1;if(bEnter(b,dt,140,.8))return;b.x+=(W/2+Math.sin(b.a/150)*30-b.x)*.04*dt;b.t-=dt;
   const p=b.hp/b.mh;if(p<.66)bLaser(b,dt,p<.33?260:320,p<.33?2:1);
   if(b.t>0)return;b.n++;const a=aim(b.x,b.y);
-  if(p>.66){b.t=84;if(b.n%2)for(let i=0;i<14;i++)fireS(12,b.x,b.y,i/16*TAU+b.n*.15,1.9);else for(let i=-2;i<=2;i++)fireS(10,b.x,b.y+20,a+i*.18,2.7)}
-  else if(p>.33){b.t=68;if(b.n%3==0)for(let i=0;i<17;i++)fireS(12,b.x,b.y,i/20*TAU+b.n*.1,2);else for(let i=-2;i<=2;i++)fireS(10,b.x,b.y+20,a+i*.16,2.9)}
+  if(p>.66){b.t=84;const m=b.n%3;if(m==1)for(let i=0;i<14;i++)fireS(12,b.x,b.y,i/14*TAU+b.n*.15,1.9);else if(m==2)for(let i=-2;i<=2;i++)fireS(10,b.x,b.y+20,a+i*.18,2.7);else for(let i=0;i<4;i++)msl(b.x,b.y,i/4*TAU+Math.PI/4,1.8,i%2)}
+  else if(p>.33){b.t=68;const m=b.n%3;if(m==0)for(let i=0;i<17;i++)fireS(12,b.x,b.y,i/17*TAU+b.n*.1,2);else if(m==1){msl(b.x,b.y+30,a,1.35,2);for(const s2 of[-1,1])msl(b.x+s2*40,b.y,a+s2*.6,1.8,1)}else for(let i=-2;i<=2;i++)fireS(10,b.x,b.y+20,a+i*.16,2.9)}
   else{b.t=13;for(const o of[0,TAU/3,TAU*2/3])fireS(12,b.x,b.y,b.n*.21+o,2.1);if(b.n%12==0)for(let i=-2;i<=2;i++)fireS(10,b.x,b.y+20,a+i*.2,3)}}
 function gungnir(f,p,pc,c,pu,M){const ch=f.cg>0?1-f.cg/90:0;
   M(()=>{cx.fillStyle='#3a404a';cx.fillRect(40,-8,22,6);rrp(62,-30,56,40,2);const g=cx.createLinearGradient(0,-30,0,10);g.addColorStop(0,'#3a6ab8');g.addColorStop(1,'#14244a');cx.fillStyle=g;cx.fill();gOut(2);
@@ -248,8 +248,8 @@ function gunAI(b,dt){b.nc=0;if(bEnter(b,dt,112,.7))return;b.x=W/2+Math.sin(b.a/1
   if(b.cg>0){b.cg-=dt;if(b.cg<=0){shake=Math.max(shake,14);sfx('big');explode(b.x,b.y+100,14,'#bfe8ff');const a=aim(b.x,b.y+100);for(let i=0;i<24;i++)fireS(10,b.x,b.y+100,i/24*TAU,2.2);for(let i=-3;i<=3;i++)fireS(12,b.x,b.y+100,a+i*.1,3.2)}return}
   if(b.t>0)return;b.n++;const x=b.x,y=b.y+100,a=aim(x,y);
   if(p>.66){b.t=72;const m=b.n%3;if(m==0)for(let i=-3;i<=3;i++)fireS(10,x,y,a+i*.15,2.8);else if(m==1)for(let i=0;i<18;i++)fireS(12,b.x,b.y-20,i/18*TAU+b.n*.2,1.9);else{b.cg=90;sfx('warn2')}}
-  else if(p>.33){b.t=58;const m=b.n%4;if(m==0)for(let i=-4;i<=4;i++)fireS(10,x,y,a+i*.13,2.9);else if(m==1){for(let i=0;i<20;i++)fireS(12,b.x,b.y-20,i/20*TAU+b.n*.13,2)}else if(m==2){for(const o of[-.5,-.17,.17,.5])fireS(11,b.x,b.y-20,a+o,2.1)}else{b.cg=80;sfx('warn2')}}
-  else{b.t=10;for(const o of[0,Math.PI])fireS(12,b.x,b.y-20,b.n*.27+o,2.2);if(b.n%9==0)for(let i=-2;i<=2;i++)fireS(10,x,y,a+i*.2,3);if(b.n%30==15){b.cg=70;sfx('warn2')}}}
+  else if(p>.33){b.t=58;const m=b.n%4;if(m==0)for(let i=-4;i<=4;i++)fireS(10,x,y,a+i*.13,2.9);else if(m==1){for(let i=0;i<20;i++)fireS(12,b.x,b.y-20,i/20*TAU+b.n*.13,2)}else if(m==2){for(const o of[-.5,-.17,.17,.5])msl(b.x,b.y-20,a+o,1.9,1);msl(b.x,b.y+60,a,1.35,2)}else{b.cg=80;sfx('warn2')}}
+  else{b.t=10;for(const o of[0,Math.PI])fireS(12,b.x,b.y-20,b.n*.27+o,2.2);if(b.n%9==0)for(let i=-2;i<=2;i++)fireS(10,x,y,a+i*.2,3);if(b.n%30==15){b.cg=70;sfx('warn2')}if(b.n%14==7)for(const s2 of[-1,1])msl(b.x+s2*30,b.y-62,Math.PI/2+s2*.7,1.8,1)}}
 LZB.add(27);LZB.add(28);
 
 // ---------- stage data overrides 23..28 ----------
@@ -258,13 +258,14 @@ LZB.add(27);LZB.add(28);
   (f,x,y,a)=>{for(let i=-1;i<=1;i++)for(let k=0;k<2;k++)fireS(12,x,y,a+i*.22+k*.03,2.6+k*.3);f.nx=70},          // +0 tracer fan
   (f,x,y)=>{for(let i=0;i<14;i++)fireS(10,x,y,i/14*TAU+f.n*.2,2);f.nx=90},                                       // +1 shell ring
   f=>{const o=mkEn('V',f.x-40);o.y=f.y;const o2=mkEn('V',f.x+40);o2.y=f.y;f.nx=130},                            // +2 boats
-  (f,x,y,a)=>{for(const o of[-.5,-.17,.17,.5])fireS(11,x,y,a+o,2);f.nx=100},                                     // +3 missiles
+  (f,x,y,a)=>{for(const o of[-.5,-.17,.17,.5])msl(x,y,a+o,1.9,Math.abs(o)<.3?1:0);f.nx=100},                                     // +3 missiles
   f=>{mortar(ship.x,ship.y,80,8);f.nx=110},                                                                       // +4 mortar
   (f,x,y,a)=>{for(let i=-3;i<=3;i++)fireS(10,x,y,a+i*.15,2.8);f.nx=74},                                          // +5 shell fan 7
   f=>{mkEn('U',f.x-50,f.y);mkEn('U',f.x+50,f.y);f.nx=140},                                                        // +6 helis
   (f,x,y)=>{for(let i=0;i<14;i++)fireS(12,x,y,i/14*TAU+f.n*.25,1.9);f.nx=95},                                     // +7 tracer ring
-  (f,x,y)=>{for(let i=0;i<4;i++)fireS(12,x,y,f.n*.5+i*TAU/4,2.2);f.nx=22;if(f.n%8==0)f.nx=85});                  // +8 spiral burst
- const SQ=[[mb,mb+1,mb,mb+2],[mb+3,mb+5,mb+3,mb+1],[mb+5,mb+4,mb+1,mb+4],[mb+7,mb+6,mb+5,mb+7],[mb+8,mb+8,mb+3,mb+7],[mb+8,mb+5,mb+7,mb+3,mb+8]];
+  (f,x,y)=>{for(let i=0;i<4;i++)fireS(12,x,y,f.n*.5+i*TAU/4,2.2);f.nx=22;if(f.n%8==0)f.nx=85},
+  (f,x,y,a)=>{msl(x,y,a,1.35,2);for(const s2 of[-1,1])msl(x+s2*20,y,a+s2*.7,1.8,1);f.nx=120});                  // +8 spiral burst
+ const SQ=[[mb,mb+3,mb+1,mb+2],[mb+3,mb+5,mb+9,mb+1],[mb+5,mb+4,mb+3,mb+9],[mb+7,mb+3,mb+6,mb+9],[mb+8,mb+3,mb+9,mb+7],[mb+8,mb+9,mb+7,mb+3,mb+5]];
  const D=[
   {S:{f:'森と河',w:{N:2,F:2,P:2,V:1.2,U:1.5,d:1},es:1.05,sp:1.05,hn:'川の砲艇は流れに沿って進む！'},
    SC:[[60,'fk',[100,260]],[200,'bt',2],[340,'tk',[80,280]],[480,'hc',[120,240]],[600,'tr',[60,300]],[740,'bt',3],[880,'fk',[180]],[1000,'tk',[120,240]],[1120,'dl',0],[1240,'fk',[60,300]],[1350,'mb'],
