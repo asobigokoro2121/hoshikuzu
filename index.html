@@ -446,7 +446,7 @@ const gi=()=>co>2?21:co*7+Math.min(stg,6),CN=['銀河航路','氷晶星雲','紅
 const sg=()=>STG[gi()],HPS=[470,610,780,990,1950],BN=['ヴァルキリー','ハイヴ','ガーディアン','ドレッドノート','終焉の星帝'];
 const PATL=[0,[[0,2]],[[0,2.6]],[[-4,1.8],[4,1.8]],[[-6,1.6],[0,2],[6,1.6]],[[-8,1.7],[-2.5,2],[2.5,2],[8,1.7]]],WC=['#fff3c4','#7df9ff','#ffb35c'];
 const DF=[{n:'やさしい',lv:5,bm:3,hp:.65,bh:.7,es:.8,fr:.7,sp:.8,dr:1.5,rv:0,ds:'ライフ5　ボム3　敵が柔らかく、弾も遅い'},{n:'ふつう',lv:3,bm:2,hp:1,bh:1,es:1,fr:1,sp:1,dr:1,rv:0,ds:'ライフ3　ボム2　標準のバランス'},{n:'むずかしい',lv:3,bm:1,hp:1.3,bh:1.35,es:1.15,fr:1.3,sp:1.25,dr:.8,rv:1,ds:'ライフ3　ボム1　新型の敵が出現、倒すと撃ち返す'},{n:'すごくむずかしい',lv:2,bm:1,hp:1.5,bh:1.6,es:1.25,fr:1.5,sp:1.4,dr:.7,rv:2,ds:'ライフ2　ボム1　新型の敵が勢ぞろい、2発撃ち返す'}];
-for(const d of DF){d.es*=.93;d.fr*=.92;d.sp*=.92;d.hp*=.92;d.bh*=.9;d.dr*=1.15}DF[0].fr*=.85;DF[1].fr*=.93;DF[2].fr*=.93;DF[0].sp*=.9;DF[1].sp*=.9;DF[0].es*=.88;for(const d of DF){d.fr*=.85;d.rv=0;d.es*=.82}DF[2].ds='ライフ3　ボム1　新型の敵が出現';DF[3].ds='ライフ2　ボム1　新型の敵が勢ぞろい';
+for(const d of DF){d.es*=.93;d.fr*=.92;d.sp*=.92;d.hp*=.92;d.bh*=.9;d.dr*=1.15}DF[0].fr*=.85;DF[1].fr*=.93;DF[2].fr*=.93;DF[0].sp*=.9;DF[1].sp*=.9;DF[0].es*=.88;for(const d of DF){d.fr*=.85*.93;d.rv=0;d.es*=.82}DF[2].ds='ライフ3　ボム1　新型の敵が出現';DF[3].ds='ライフ2　ボム1　新型の敵が勢ぞろい';
 const D=()=>DF[di];const SOX=()=>R()<.25?'x':R()<.5?'s':'o';
 const add=o=>{if(o.k=='i'||o.k=='o'){o.mh=1;o.hp=1}else if(o.k!='b'){o.mh=Math.max(1,o.mh*D().hp*CF[co].hp*(o.k=='y'||o.nsc?1:1.15*(1+GL()*.1)));o.hp=o.mh}o.fc=0;o.fl=o.fl||0;o.a=o.a||0;fo.push(o);return o};
 const cnt=k=>fo.reduce((n,f)=>n+(f.k==k),0);
@@ -887,7 +887,8 @@ function bossA0(b,dt){
   else if(p>.33){b.t=48;b.n++;if(b.n%2)for(let i=0;i<12;i++)fireA(x,y,i/12*TAU+b.a,2.2);else for(let i=-1;i<2;i++)fireA(x,y,a0+i*.25,3.4)}
   else{b.t=13;b.n++;fireA(x,y,Math.PI/2+Math.sin(b.n*.4)*1.2,2.6);if(b.n%5==0)fireA(x,y,a0,3.6)}
 }
-function mv(f,dt){
+function mv(f,dt){const n0=eb.length;try{return mv0(f,dt)}finally{for(let i=n0;i<eb.length;i++)if(!eb[i]._src)eb[i]._src=f.k}}
+function mv0(f,dt){
   f.a+=dt;f.fl-=dt;f.fc+=dt*D().fr*GF()*(f.k=='z'||f.k=='b'?1:di?.83:.88);const k=f.k;
   if(k=='u'){f.y+=f.vy*dt;f.x=cl(f.x0+Math.sin(f.a/28)*70,20,W-20);if(f.fc>=f.nx){f.fc=0;f.nx=85;fireA(f.x,f.y,aim(f.x,f.y),3)}}
   else if(k=='g'){
@@ -1017,7 +1018,7 @@ function upd(dt){
   ptUpd(dt);
   fo=fo.filter(f=>!f.dead&&(f.k=='b'||f.y<(f.k=='q'?H+220:H+60)&&f.y>-260&&f.x>-220&&f.x<W+220));
   bl=bl.filter(b=>!b.d&&b.y>-20&&b.y<H+20&&b.x>-20&&b.x<W+20);
-  eb=eb.filter(q=>!q.d&&q.x>-10&&q.x<W+10&&q.y>(q.gv?-240:-10)&&q.y<H+10);
+  ebThin();eb=eb.filter(q=>!q.d&&q.x>-10&&q.x<W+10&&q.y>(q.gv?-240:-10)&&q.y<H+10);
   orbs=orbs.filter(o=>!o.d&&o.y<H+20);
   pt=pt.filter(q=>q.l>0);sdUpd(dt);
 }
@@ -3471,6 +3472,14 @@ function zeGo(i){if(!ZEK)zeLoad();const n=ZEL.length;zkI=(i%n+n)%n;const e=ZEL[z
   document.querySelectorAll('#zkcos button').forEach(b=>b.setAttribute('aria-selected',b.dataset.c=='4'));zkLock=!got;$('zkpr').hidden=true}
 function zkGo(i){if(ZE)return zeGo(i);zkGoB(i)}
 
+// ---------- fewer enemy bullets overall ----------
+// regular enemies: every 10th bullet of each kind is skipped (telegraphed snipers / lancers excepted)
+// bosses / mid-bosses: rings and fans of 6+ bullets lose about 1 in 10
+var EBT=0,EBC={};
+function ebThin(){const G={};for(const q of eb){if(q._s)continue;q._s=1;if(q.fx||q.d||q.hm)continue;const s=q._src;
+    if(s&&s!='b'&&s!='z'){if(s=='s'||s=='l')continue;EBC[s]=(EBC[s]||0)+1;if(EBC[s]%10==0)q.d=1;continue}
+    const k=Math.round(q.x/14)+','+Math.round(q.y/14);(G[k]||(G[k]=[])).push(q)}
+  for(const k in G){const g=G[k];if(g.length<6)continue;const o=(EBT++)%10;for(let i=o;i<g.length;i+=10)g[i].d=1}}
 ACH.push(['rs','最高評価','面の評価で「S」を取る'],['ra','完全なる航路','1回のプレイでコースの全7面を「S」評価でクリア'],['ru','ボスラッシュ制覇','ボスラッシュでボス7体をすべて倒す'],['ze','雑魚敵博士','敵図鑑の雑魚敵31種をすべて登録']);
 rushUI();$('sfd').textContent=SP().ds+'｜'+cbName(si);
 

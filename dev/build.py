@@ -66,6 +66,7 @@ rep("mh:MHP[T]*1.21*(co>2?1.25:1),","mh:MHP[T]*1.21*1.07*(co>2?1.25:1),")
 # ---- all enemies (bosses included) fire a little less often
 rep("for(const d of DF){d.fr*=.85;d.rv=0;d.es*=.82}","for(const d of DF){d.fr*=.85*.93;d.rv=0;d.es*=.82}")
 rep("eb=eb.filter(q=>!q.d&&q.x>-10","ebThin();eb=eb.filter(q=>!q.d&&q.x>-10")
+rep("function mv(f,dt){","function mv(f,dt){const n0=eb.length;try{return mv0(f,dt)}finally{for(let i=n0;i<eb.length;i++)if(!eb[i]._src)eb[i]._src=f.k}}\nfunction mv0(f,dt){")
 # ---- HTML
 rep('<p id="stn"></p>','<button id="rsh" type="button" aria-pressed="false">ボスラッシュ</button><p id="stn"></p>')
 rep('<button type="button" role="tab" data-c="3">EX</button></div>','<button type="button" role="tab" data-c="3">EX</button><button type="button" role="tab" data-c="4">雑魚敵</button></div>')
