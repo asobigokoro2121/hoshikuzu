@@ -187,5 +187,9 @@ function zeGo(i){if(!ZEK)zeLoad();const n=ZEL.length;zkI=(i%n+n)%n;const e=ZEL[z
   document.querySelectorAll('#zkcos button').forEach(b=>b.setAttribute('aria-selected',b.dataset.c=='4'));zkLock=!got;$('zkpr').hidden=true}
 function zkGo(i){if(ZE)return zeGo(i);zkGoB(i)}
 
+// ---------- thin out big volleys a little: rings / fans of 6+ bullets lose about 1 in 10 ----------
+var EBT=0;
+function ebThin(){const G={};for(const q of eb){if(q._s)continue;q._s=1;if(q.fx||q.d||q.hm)continue;const k=Math.round(q.x/14)+','+Math.round(q.y/14);(G[k]||(G[k]=[])).push(q)}
+  for(const k in G){const g=G[k];if(g.length<6)continue;const o=(EBT++)%10;for(let i=o;i<g.length;i+=10)g[i].d=1}}
 ACH.push(['rs','最高評価','面の評価で「S」を取る'],['ra','完全なる航路','1回のプレイでコースの全7面を「S」評価でクリア'],['ru','ボスラッシュ制覇','ボスラッシュでボス7体をすべて倒す'],['ze','雑魚敵博士','敵図鑑の雑魚敵31種をすべて登録']);
 rushUI();$('sfd').textContent=SP().ds+'｜'+cbName(si);
