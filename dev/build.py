@@ -83,8 +83,9 @@ CSS='''#rsh{font:inherit;font-size:13px;padding:4px 16px;border:2px solid #7a5ab
 .rs-sp{display:flex;flex-direction:column;gap:1px;font-size:12px;text-align:left}
 .rs-sp div{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid rgba(143,154,208,.18);padding:1px 0}
 .rs-sp i{font-style:normal;color:#c8d0ff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rs-sp b{font-weight:400;color:#fff}
-#zkcos{grid-template-columns:repeat(3,1fr) .7fr 1fr;width:min(100%,350px)}#zkcos button{font-size:12px}#zkd{white-space:pre-line}
+#zkcos{grid-template-columns:repeat(4,1fr) .8fr 1.1fr;gap:4px;width:min(100%,356px)}#zkcos button{font-size:11px;padding:5px 0;letter-spacing:-.02em}#zkd{white-space:pre-line}
 '''
+exec(open(os.path.join(D,'course0.py')).read())
 rep('</style>',CSS+'</style>')
 feat=open(os.path.join(D,'feat2.js')).read()
 i=s.rfind('</script>');s=s[:i]+feat+'\n'+s[i:]

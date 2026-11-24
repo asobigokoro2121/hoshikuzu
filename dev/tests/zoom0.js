@@ -1,0 +1,11 @@
+const {open}=require('./lib');
+(async()=>{const f=process.argv[2],out=process.argv[3];const {b,p}=await open(f,{'hoshikuzu-cu':'3'},{width:420,height:760});
+ await p.evaluate(()=>{setCo(0);window.ovLock=0;act();PRB=0;fo=[];eb=[];for(let i=0;i<300;i++){inv=1e9;upd(1)}fo=[];eb=[];sp=1e9;
+  const T=22,h=800;fo.push({k:'b',bt:T,x:W/2,y:150,r:BR[T],hp:h,mh:h,pts:0,a:300,t:999,n:0,lt:999,lc:0,lx:[],fl:0,parts:mkParts(T,h),ta:1.2});
+  add({k:'z',st:22,x:W/2,y:360,r:40,mh:100,ty:360,nx:999,n:0,pts:0});
+  ['N','O','P','Q','U'].forEach((k,i)=>{mkEn(k,50+i*65,480);const e=fo[fo.length-1];e.y=480;e.x=50+i*65;e.vx=0;e.sp=0});ship.x=W/2+80;ship.y=H-60;cutI=null;msg='';mt=0;mortar(W/2+80,H-60,74,6);MOR[0].w=30;GY=2000;gYl=2000});
+ await p.waitForTimeout(300);
+ const cv=await p.$('canvas');const bb=await cv.boundingBox();
+ await p.screenshot({path:out+'_z.png',clip:{x:bb.x,y:bb.y,width:bb.width,height:bb.height*.95}});
+ console.log(await p.evaluate(()=>JSON.stringify(fo.map(f=>[f.k,Math.round(f.x),Math.round(f.y),f.ta]))));
+ console.log('errs',p.errs.length);await b.close()})();
