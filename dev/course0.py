@@ -81,7 +81,7 @@ RS("if(o.b){if(co>2)th=exSecQ(3);stT=co>2?3600:3300;","if(o.b){if(co>3)th=exSecQ
 RS("if(co>2)for(let k=0;k<j;k++)if(SC[k][1]=='exs')","if(co>3)for(let k=0;k<j;k++)if(SC[k][1]=='exs')")
 RS("const where=(co>2?'EXTRA':'コース'+(co+1)+'　第'+(P.s+1)+'面')+'　'+(P.b?(co>2?","const where=(co>3?'EXTRA':'コース'+(co+1)+'　第'+(P.s+1)+'面')+'　'+(P.b?(co>3?")
 # --- inject course data
-c0d=open(os.path.join(D2,'c0data.js')).read()+'\n'+open(os.path.join(D2,'c0more.js')).read()+'\n'+open(os.path.join(D2,'c0msl.js')).read()+'\n'+open(os.path.join(D2,'c0car.js')).read()+'\n'+open(os.path.join(D2,'c0art.js')).read();c0b=open(os.path.join(D2,'c0bg.js')).read()
+c0d=open(os.path.join(D2,'c0data.js')).read()+'\n'+open(os.path.join(D2,'c0more.js')).read()+'\n'+open(os.path.join(D2,'c0msl.js')).read()+'\n'+open(os.path.join(D2,'c0car.js')).read()+'\n'+open(os.path.join(D2,'c0art.js')).read()+'\n'+open(os.path.join(D2,'c0art2.js')).read();c0b=open(os.path.join(D2,'c0bg.js')).read()
 A="{const e0=EPK.b;EPK.b=f=>{if(f.bt==21&&(f.ph||0)<3){f.hp=1;return true}"
 i=s.find(A);assert i>0 and s.count(A)==1;j=s.find('\n',i);s=s[:j+1]+c0d+'\n'+s[j+1:]
 B="TH.push({t:[12,6,28],b:[44,22,74]"
