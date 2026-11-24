@@ -17,7 +17,7 @@ HDX.unshift([{N:1,U:1},{P:.6},{O:.5,U:.5}]);
 
 // ---------- ground layer ----------
 var GY=0,gYl=0,GD=0,GDEC=[],MOR=[];
-function GSP(){const i=thB>=22?thB-22:0;return[1,.9,.8,.6,.5,.4,.3][i]}
+function GSP(){const i=thB>=22?thB-22:0;return[1,.9,.8,.7,.45,.35,.3][i]*(thB==26&&fo.some(f=>f.k=='b')?.15:1)}
 function gReset0(){GY=0;gYl=0;GD=0;GDEC=[];MOR=[]}
 function gTick(dt){GD=GY-gYl;gYl=GY;if(!(GD>=0&&GD<40))GD=0;
   for(const d of GDEC)d.y+=GD;GDEC=GDEC.filter(d=>d.y<H+60);

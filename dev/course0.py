@@ -40,7 +40,7 @@ RS("fin=T%7==6||T==21,","fin=LT(T),")
 RS("lv=(co>2?6:1+Math.min(stg,6)*.6+co*.5)","lv=(co>3?6:1+Math.min(stg,6)*.6+Math.max(0,co-1)*.5)")
 RS("stT>=(co>2?3600:3300)){bsp=1","stT>=(co>3?3600:3300)){bsp=1")
 RS("*1.32*1.07*1.05*.95*(co>2?1.25:1)","*1.32*1.07*1.05*.95*(co>3?1.25:1)")
-RS("let k='r';if(!bo){","let k=co==0?'Q':'r';if(!bo){")
+RS("let k='r';if(!bo){","let k=co==0?(stg<4?'Q':'d'):'r';if(!bo){")
 RS("NJ.sort((a,b)=>((a.i/7|0)!=co)-((b.i/7|0)!=co)||a.i-b.i)","NJ.sort((a,b)=>(THC(a.i)!=co)-(THC(b.i)!=co)||a.i-b.i)")
 RS("{const j=nebJob(co*7);nebRows(j,TWY)}for(let i=0;i<TH.length;i++)if(i!=co*7)","{const j=nebJob(TT(co));nebRows(j,TWY)}for(let i=0;i<TH.length;i++)if(i!=TT(co))")
 RS("cx.fillStyle=['#c8d0ff','#bff3ff','#ffc29a'][co];","cx.fillStyle=['#d4f5b8','#c8d0ff','#bff3ff','#ffc29a','#e0c8ff'][co];")
@@ -81,7 +81,7 @@ RS("if(o.b){if(co>2)th=exSecQ(3);stT=co>2?3600:3300;","if(o.b){if(co>3)th=exSecQ
 RS("if(co>2)for(let k=0;k<j;k++)if(SC[k][1]=='exs')","if(co>3)for(let k=0;k<j;k++)if(SC[k][1]=='exs')")
 RS("const where=(co>2?'EXTRA':'コース'+(co+1)+'　第'+(P.s+1)+'面')+'　'+(P.b?(co>2?","const where=(co>3?'EXTRA':'コース'+(co+1)+'　第'+(P.s+1)+'面')+'　'+(P.b?(co>3?")
 # --- inject course data
-c0d=open(os.path.join(D2,'c0data.js')).read();c0b=open(os.path.join(D2,'c0bg.js')).read()
+c0d=open(os.path.join(D2,'c0data.js')).read()+'\n'+open(os.path.join(D2,'c0more.js')).read();c0b=open(os.path.join(D2,'c0bg.js')).read()
 A="{const e0=EPK.b;EPK.b=f=>{if(f.bt==21&&(f.ph||0)<3){f.hp=1;return true}"
 i=s.find(A);assert i>0 and s.count(A)==1;j=s.find('\n',i);s=s[:j+1]+c0d+'\n'+s[j+1:]
 B="TH.push({t:[12,6,28],b:[44,22,74]"
