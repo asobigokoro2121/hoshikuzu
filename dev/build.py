@@ -60,6 +60,9 @@ rep("f.fc+=dt*D().fr*GF()*(f.k=='z'||f.k=='b'?1:.88);","f.fc+=dt*D().fr*GF()*(f.
 rep("&&R()<(di?.24:.12))continue;WV[op]","&&R()<(di?.27:.12))continue;WV[op]")
 rep("(bo||mid?3.6:di?3.05:2.7)","(bo||mid?3.6:di?3.2:2.7)")
 rep("$('sfd').textContent=SP().ds}","$('sfd').textContent=SP().ds+'｜'+cbName(si)}")
+# ---- boss / mid-boss HP +7%
+rep("*(ABF[T]??1))*1.32*(co>2?1.25:1)*(1+GL()*.1));","*(ABF[T]??1))*1.32*1.07*(co>2?1.25:1)*(1+GL()*.1));")
+rep("mh:MHP[T]*1.21*(co>2?1.25:1),","mh:MHP[T]*1.21*1.07*(co>2?1.25:1),")
 # ---- HTML
 rep('<p id="stn"></p>','<button id="rsh" type="button" aria-pressed="false">ボスラッシュ</button><p id="stn"></p>')
 rep('<button type="button" role="tab" data-c="3">EX</button></div>','<button type="button" role="tab" data-c="3">EX</button><button type="button" role="tab" data-c="4">雑魚敵</button></div>')
