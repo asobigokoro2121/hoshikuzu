@@ -376,7 +376,7 @@ const KON='arrowup,arrowup,arrowdown,arrowdown,arrowleft,arrowright,arrowleft,ar
 function secUI(){const b=document.querySelector('#shp button[data-s="3"]');b.hidden=!sec;$('shp').classList.toggle('x4',sec)}
 function unlockSec(){sec=true;achGet('sec');tp=[];kb=[];try{localStorage.setItem('hoshikuzu-sec','1')}catch(e){}secUI();setSi(3);shipPrev();sfx('secret');bfl=26;
   const b=document.querySelector('#shp button[data-s="3"]');b.classList.remove('new');void b.offsetWidth;b.classList.add('new');$('ovs').hidden=false;$('ovs').textContent='隠し機体「究極型」解放！'}
-function setSi(n){si=n;try{localStorage.setItem('hoshikuzu-ship',n)}catch(e){}document.querySelectorAll('#shp button').forEach(b=>b.setAttribute('aria-checked',b.dataset.s==si));$('sfd').textContent=SP().ds}
+function setSi(n){si=n;try{localStorage.setItem('hoshikuzu-ship',n)}catch(e){}document.querySelectorAll('#shp button').forEach(b=>b.setAttribute('aria-checked',b.dataset.s==si));$('sfd').textContent=SP().ds+'｜'+cbName(si)}
 function shipPrev(){document.querySelectorAll('#shp canvas').forEach(c=>{const i=+c.dataset.s,d=Math.min(devicePixelRatio||1,2),n=Math.round(44*d);c.width=c.height=n;const g=c.getContext('2d'),k=n/64,m=cx;g.setTransform(k,0,0,k,n/2,n/2-3*k);cx=g;try{shipArt(i,WCA[0],2)}finally{cx=m}})}
 const reach=()=>{try{return Math.min(6,+localStorage.getItem(RK())||0)}catch(e){return 0}};
 function reachUp(){if(PRC||RU)return;try{if(stg<7&&stg>reach())localStorage.setItem(RK(),stg)}catch(e){}}
@@ -999,10 +999,10 @@ function upd(dt){
     FS=f.k=='b'?(BFS[f.bt]??2):f.k=='z'?(MFS[f.st]??2):FSM[f.k]||0;FC=f.k=='b'?BCOL[f.bt]:f.k=='z'?MC[f.st]:f.k=='v'?[205,140,255]:f.k=='e'?[255,120,220]:EFC[f.k]||null;mv(f,dt);FS=0;FC=null;if(f.dy>0||f.dead)continue;
     for(const b of bl){
       if(b.d||f.y<0||f.gh||(b.h&&b.h.has(f)))continue;
-      if(f.k=='b'&&f.parts&&!f.dy){let hp2=null;for(const q of f.parts){if(q.dead||(b.h&&b.h.has(q)))continue;const P=partPos(f,q);if(Math.hypot(b.x-P.x,b.y-P.y)<q.r+(b.CB?18:b.L?6:3)){hp2=q;break}}
+      if(f.k=='b'&&f.parts&&!f.dy){let hp2=null;for(const q of f.parts){if(q.dead||(b.h&&b.h.has(q)))continue;const P=partPos(f,q);if(Math.hypot(b.x-P.x,b.y-P.y)<q.r+(b.CB?b.cr||18:b.L?6:3)){hp2=q;break}}
         if(hp2){if(b.pi)b.h.add(hp2);else b.d=1;sfx('hit');partHit(f,hp2,(b.dm||1)*SP().dm*PBM(b));boom(b.x,b.y,PBL>1.25?'#ffb347':'#ffe7a0',PBL>1.25?5:3);if(f.dead||f.dy)break;continue}}
       if(f.k=='h'){const d=Math.hypot(b.x-f.x,b.y-f.y);if(d<f.r+15&&d>f.r-4&&((Math.atan2(b.y-f.y,b.x-f.x)-f.sa)%TAU+TAU)%TAU<f.sw){if(b.pi)b.h.add(f);else b.d=1;f.sf=5;boom(b.x,b.y,'#9cc4ff',2);sfx('tink');continue}}
-      if(Math.hypot(b.x-f.x,b.y-f.y)>f.r+(b.CB?18:b.L?6:3)&&!(f.k=='q'&&f.sg.some(q=>Math.hypot(b.x-q[0],b.y-q[1])<9)))continue;
+      if(Math.hypot(b.x-f.x,b.y-f.y)>f.r+(b.CB?b.cr||18:b.L?6:3)&&!(f.k=='q'&&f.sg.some(q=>Math.hypot(b.x-q[0],b.y-q[1])<9)))continue;
       if(b.pi)b.h.add(f);else b.d=1;f.hp-=(b.dm||1)*SP().dm*PBM(b)*shieldF(f);if(f.fl<-5)f.fl=3;sfx('hit');
       if(f.hp<=0){kill(f);break}
       boom(b.x,b.y,shieldF(f)<1?'#8fd0ff':PBL>1.25?'#ffb347':'#fff',PBL>1.25?5:3);
@@ -3299,34 +3299,50 @@ function finStart(f){if(st!='play')return;const last=PRC?(PRC.T%7==6||PRC.T==21)
   if(RU)RU.lt.push(RU.t)}
 function sloF(){return SLO>36?.22:.22+.78*(1-SLO/36)}
 
-// ---------- 3. charge shot: keep focus mode on, then let go ----------
-const CHF=90;
-function chgUpd(dt){if(gO>0||st!='play'||PRC&&PRC.k){chg=0;return}
-  if(fcs()){const was=chg<CHF;chg=Math.min(CHF,chg+dt);if(was&&chg>=CHF){sfx('cfull',ship.x);pt.push({x:ship.x,y:ship.y,vx:0,vy:0,l:16,m:16,c:'#fff3b0',ring:22});
-      if(chgN<2){chgN++;pt.push({x:ship.x,y:ship.y-42,vx:0,vy:-.4,l:80,m:80,c:'#fff3b0',txt:'離すとチャージ弾！',fs:12})}}}
-  else{if(chg>=CHF)chgFire();chg=0}}
-function chgFire(){bl.push({x:ship.x,y:ship.y-26,vx:0,vy:9,dm:12*(1+GL()*.15),pi:1,h:new Set(),CB:1});sfx('cshot',ship.x);shake=Math.max(shake,5);ship.mf=8;pt.push({x:ship.x,y:ship.y-12,vx:0,vy:0,l:18,m:18,c:'#ffb340',ring:36,lw:5});
-  for(let i=0;i<12;i++)pt.push({x:ship.x+(R()-.5)*16,y:ship.y-22,vx:(R()-.5)*1.8,vy:-1-R()*2.4,l:20,m:20,k:'s',c:R()<.5?'#fff3b0':'#ffd166',sz:2.2,dg:.93})}
-function cbD(b){const x=b.x,y=b.y;
-  if(b.hn!==b.h.size){b.hn=b.h.size;if(b.hn){for(let i=0;i<12;i++){const a=R()*TAU,v=1.5+R()*3.2;pt.push({x,y:y-10,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:22,m:22,k:'s',c:R()<.5?'#ffd166':'#fff',sz:2.6,dg:.9})}pt.push({x,y:y-10,vx:0,vy:0,l:16,m:16,c:'#ffd166',ring:30,lw:4})}}
-  const L=Math.min(120,(b.age=(b.age||0)+1)*12),tail=(w0,w1,len)=>{cx.beginPath();cx.moveTo(x-w0,y);cx.lineTo(x+w0,y);cx.lineTo(x+w1,y+len);cx.lineTo(x-w1,y+len);cx.closePath()};
-  cx.save();cx.globalCompositeOperation='source-over';cx.lineJoin='round';
-  // dark backing so it reads on bright backgrounds too
-  tail(15,3,L+6);cx.fillStyle='rgba(30,10,0,.42)';cx.fill();
-  {const g=cx.createLinearGradient(0,y,0,y+L);g.addColorStop(0,'rgba(255,190,70,.95)');g.addColorStop(.55,'rgba(255,120,40,.55)');g.addColorStop(1,'rgba(255,90,30,0)');tail(12,1.5,L);cx.fillStyle=g;cx.fill()}
-  const H=[[x,y-26],[x+14,y-3],[x+7,y+9],[x-7,y+9],[x-14,y-3]];
-  cx.beginPath();H.forEach((q,i)=>i?cx.lineTo(q[0],q[1]):cx.moveTo(q[0],q[1]));cx.closePath();
-  {const g=cx.createLinearGradient(0,y-26,0,y+9);g.addColorStop(0,'#ffffff');g.addColorStop(.45,'#ffe08a');g.addColorStop(1,'#ff8a2a');cx.fillStyle=g}cx.fill();cx.lineWidth=2.4;cx.strokeStyle='#3a1600';cx.stroke();
-  cx.fillStyle='#ffffff';cx.beginPath();cx.moveTo(x,y-19);cx.lineTo(x+5,y-3);cx.lineTo(x,y+3);cx.lineTo(x-5,y-3);cx.closePath();cx.fill();
+// ---------- 3. charge shot: keep focus mode on, then let go (each ship has its own kind) ----------
+// n name, ch charge frames, k pellets/angles, m damage mult, r hit radius, v speed, s draw scale, colours
+const CBS=[
+ {n:'メガブラスト',tip:'離すと特大チャージ弾！',ch:90,an:[0],m:1.5,r:26,v:7,s:1.4,c1:'#ffe08a',c2:'#ff8a2a',ol:'#3a1600',g:[255,190,80],t:[255,150,50],ring:'#ffb340'},
+ {n:'スプレッド',tip:'離すと3方向チャージ弾！',ch:55,an:[-.22,0,.22],m:.4,r:14,v:11,s:.75,c1:'#c8f8ff',c2:'#2aaeff',ol:'#04203c',g:[120,215,255],t:[60,170,255],ring:'#5ad2ff'},
+ {n:'ガードバースト',tip:'離すと周りの敵弾も消える！',ch:90,an:[0],m:1,r:18,v:9,s:1,c1:'#dcffb8',c2:'#36d26a',ol:'#06280f',g:[140,255,150],t:[60,220,110],ring:'#6ee68a',clr:110},
+ {n:'ノヴァ',tip:'離すと爆裂チャージ弾！',ch:75,an:[0],m:1.2,r:20,v:9,s:1.1,c1:'#f2dcff',c2:'#a055ff',ol:'#1c0636',g:[205,150,255],t:[160,90,255],ring:'#c08cff',nova:78}];
+const CB=()=>CBS[si]||CBS[0];
+function cbName(i){return['メガブラスト','スプレッド','ガードバースト','ノヴァ'][i]||''}
+const cbRG=(c,a)=>'rgba('+c[0]+','+c[1]+','+c[2]+','+a+')';
+function chgUpd(dt){cbHits();if(gO>0||st!='play'||PRC&&PRC.k){chg=0;return}const C=CB();
+  if(fcs()){const was=chg<C.ch;chg=Math.min(C.ch,chg+dt);if(was&&chg>=C.ch){sfx('cfull',ship.x);pt.push({x:ship.x,y:ship.y,vx:0,vy:0,l:16,m:16,c:C.ring,ring:22});
+      if(chgN<2){chgN++;pt.push({x:ship.x,y:ship.y-42,vx:0,vy:-.4,l:80,m:80,c:'#fff3b0',txt:C.tip,fs:12})}}}
+  else{if(chg>=C.ch)chgFire();chg=0}}
+function chgFire(){const C=CB(),dm=12*(1+GL()*.15)*C.m;
+  for(const a of C.an)bl.push({x:ship.x+Math.sin(a)*10,y:ship.y-26,vx:Math.sin(a)*C.v,vy:Math.cos(a)*C.v,dm,pi:1,h:new Set(),CB:1,cr:C.r,cs:si});
+  sfx('cshot',ship.x);shake=Math.max(shake,5);ship.mf=8;pt.push({x:ship.x,y:ship.y-12,vx:0,vy:0,l:18,m:18,c:C.ring,ring:36,lw:5});
+  for(let i=0;i<12;i++)pt.push({x:ship.x+(R()-.5)*16,y:ship.y-22,vx:(R()-.5)*1.8,vy:-1-R()*2.4,l:20,m:20,k:'s',c:R()<.5?'#fff':C.c1,sz:2.2,dg:.93});
+  if(C.clr){let n=0;for(const q of eb)if(!q.d&&Math.hypot(q.x-ship.x,q.y-ship.y)<C.clr){q.d=1;n++;if(n<40)pt.push({x:q.x,y:q.y,vx:0,vy:-.6,l:16,m:16,k:'s',c:'#dcffb8',sz:2.4,dg:.9})}
+    pt.push({x:ship.x,y:ship.y,vx:0,vy:0,l:24,m:24,c:'#6ee68a',ring:C.clr,lw:5},{x:ship.x,y:ship.y,vx:0,vy:0,l:16,m:16,c:'#ffffff',ring:C.clr*.6,lw:3})}}
+// hit effects (and the nova blast) are handled in the update, not in drawing
+function cbHits(){for(const b of bl){if(!b.CB||b.d)continue;if(b.hn===b.h.size)continue;const was=b.hn||0;b.hn=b.h.size;if(b.hn<=was)continue;
+  const C=CBS[b.cs]||CBS[0];for(let i=0;i<12;i++){const a=R()*TAU,v=1.5+R()*3.2;pt.push({x:b.x,y:b.y-10,vx:Math.cos(a)*v,vy:Math.sin(a)*v,l:22,m:22,k:'s',c:R()<.5?C.c1:'#fff',sz:2.6,dg:.9})}
+  pt.push({x:b.x,y:b.y-10,vx:0,vy:0,l:16,m:16,c:C.ring,ring:30*C.s,lw:4});
+  if(C.nova){pt.push({x:b.x,y:b.y-8,vx:0,vy:0,l:22,m:22,c:'#c08cff',ring:C.nova,lw:6},{x:b.x,y:b.y-8,vx:0,vy:0,l:14,m:14,c:'#ffffff',ring:C.nova*.55,lw:3});sfx('zap',b.x);
+    for(const f of fo){if(f.dead||f.dy||f.y<0||f.gh||b.h.has(f))continue;if(Math.hypot(f.x-b.x,f.y-b.y)>C.nova+f.r)continue;b.h.add(f);f.hp-=b.dm*SP().dm*.6*shieldF(f);if(f.fl<-5)f.fl=3;if(f.hp<=0)kill(f)}b.hn=b.h.size}}}
+function cbD(b){const C=CBS[b.cs]||CBS[0],k=C.s,x=b.x,y=b.y,th=Math.atan2(b.vx,b.vy);
+  const L=Math.min(120*k,(b.age=(b.age||0)+1)*12),tail=(w0,w1,len)=>{cx.beginPath();cx.moveTo(-w0,0);cx.lineTo(w0,0);cx.lineTo(w1,len);cx.lineTo(-w1,len);cx.closePath()};
+  cx.save();cx.translate(x,y);cx.rotate(th);cx.globalCompositeOperation='source-over';cx.lineJoin='round';
+  tail(15*k,3*k,L+6);cx.fillStyle='rgba(20,10,10,.42)';cx.fill();
+  {const g=cx.createLinearGradient(0,0,0,L);g.addColorStop(0,cbRG(C.g,.95));g.addColorStop(.55,cbRG(C.t,.55));g.addColorStop(1,cbRG(C.t,0));tail(12*k,1.5*k,L);cx.fillStyle=g;cx.fill()}
+  cx.beginPath();[[0,-26],[14,-3],[7,9],[-7,9],[-14,-3]].forEach((q,i)=>i?cx.lineTo(q[0]*k,q[1]*k):cx.moveTo(q[0]*k,q[1]*k));cx.closePath();
+  {const g=cx.createLinearGradient(0,-26*k,0,9*k);g.addColorStop(0,'#ffffff');g.addColorStop(.45,C.c1);g.addColorStop(1,C.c2);cx.fillStyle=g}cx.fill();cx.lineWidth=2.4;cx.strokeStyle=C.ol;cx.stroke();
+  cx.fillStyle='#ffffff';cx.beginPath();cx.moveTo(0,-19*k);cx.lineTo(5*k,-3*k);cx.lineTo(0,3*k);cx.lineTo(-5*k,-3*k);cx.closePath();cx.fill();
+  if(C.nova){cx.strokeStyle=cbRG(C.g,.8);cx.lineWidth=1.6;cx.beginPath();cx.arc(0,-6*k,(15+Math.sin(t/2)*2)*k,0,TAU);cx.stroke()}
   cx.restore();
-  glow(x,y-6,42,[255,190,80],.9);
-  {const g=cx.createLinearGradient(0,y,0,y+L*.8);g.addColorStop(0,'rgba(255,255,255,.9)');g.addColorStop(1,'rgba(255,240,200,0)');tail(3.5,.5,L*.8);cx.fillStyle=g;cx.fill()}
-  if(R()<.6)pt.push({x:x+(R()-.5)*14,y:y+6,vx:(R()-.5)*1.2,vy:1+R()*1.5,l:14,m:14,k:'s',c:R()<.5?'#ffd166':'#ff9a3a',sz:2,dg:.92})}
-function chgD(){if(st!='play'||chg<12||gO>0)return;const k=chg/CHF,full=k>=1;cx.save();cx.translate(ship.x,ship.y);cx.lineCap='round';
+  glow(x,y-6*k,42*k,C.g,.9);
+  cx.save();cx.translate(x,y);cx.rotate(th);{const g=cx.createLinearGradient(0,0,0,L*.8);g.addColorStop(0,'rgba(255,255,255,.9)');g.addColorStop(1,'rgba(255,255,255,0)');tail(3.5*k,.5*k,L*.8);cx.fillStyle=g;cx.fill()}cx.restore();
+  if(R()<.6)pt.push({x:x+(R()-.5)*14*k,y:y+6,vx:(R()-.5)*1.2,vy:1+R()*1.5,l:14,m:14,k:'s',c:R()<.5?C.c1:C.c2,sz:2,dg:.92})}
+function chgD(){if(st!='play'||chg<12||gO>0)return;const C=CB(),k=chg/C.ch,full=k>=1;cx.save();cx.translate(ship.x,ship.y);cx.lineCap='round';
   cx.lineWidth=7;cx.strokeStyle='rgba(10,6,24,.55)';cx.beginPath();cx.arc(0,0,25,0,TAU);cx.stroke();
-  cx.lineWidth=3.5;cx.strokeStyle='rgba(255,243,176,.25)';cx.beginPath();cx.arc(0,0,25,0,TAU);cx.stroke();
-  cx.strokeStyle=full?(Math.floor(t/4)%2?'#ffffff':'#ffb340'):'#ffb340';cx.beginPath();cx.arc(0,0,25,-Math.PI/2,-Math.PI/2+TAU*k);cx.stroke();
-  if(full){glow(0,-4,34,[255,190,80],.5+.25*Math.sin(t/3));for(let i=0;i<4;i++){const a=t/10+i*Math.PI/2;cx.fillStyle='#fff3b0';cx.beginPath();cx.arc(Math.cos(a)*25,Math.sin(a)*25,2.6,0,TAU);cx.fill()}}
+  cx.lineWidth=3.5;cx.strokeStyle='rgba(255,255,255,.2)';cx.beginPath();cx.arc(0,0,25,0,TAU);cx.stroke();
+  cx.strokeStyle=full?(Math.floor(t/4)%2?'#ffffff':C.ring):C.ring;cx.beginPath();cx.arc(0,0,25,-Math.PI/2,-Math.PI/2+TAU*k);cx.stroke();
+  if(full){glow(0,-4,34,C.g,.5+.25*Math.sin(t/3));for(let i=0;i<4;i++){const a=t/10+i*Math.PI/2;cx.fillStyle=C.c1;cx.beginPath();cx.arc(Math.cos(a)*25,Math.sin(a)*25,2.6,0,TAU);cx.fill()}}
   cx.restore()}
 
 // ---------- 4. stage ranks (S / A / B / C) ----------
@@ -3429,7 +3445,7 @@ function zeGo(i){if(!ZEK)zeLoad();const n=ZEL.length;zkI=(i%n+n)%n;const e=ZEL[z
 function zkGo(i){if(ZE)return zeGo(i);zkGoB(i)}
 
 ACH.push(['rs','最高評価','面の評価で「S」を取る'],['ra','完全なる航路','1回のプレイでコースの全7面を「S」評価でクリア'],['ru','ボスラッシュ制覇','ボスラッシュでボス7体をすべて倒す'],['ze','雑魚敵博士','敵図鑑の雑魚敵31種をすべて登録']);
-rushUI();
+rushUI();$('sfd').textContent=SP().ds+'｜'+cbName(si);
 
 </script>
 </body>

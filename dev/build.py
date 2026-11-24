@@ -15,7 +15,7 @@ rep("if(!f.dy){f.dy=110;f.hp=0;clearEB(1);shake=16;sfx('big')}return}","if(!f.dy
 rep("if(hs>0){hs-=dt;ud=dt*.15}upd(ud)}","if(hs>0){hs-=dt;ud=dt*.15}else if(SLO>0){ud=dt*sloF();SLO-=dt}upd(ud)}")
 # ---- 3. charge shot
 rep("if(dr>0)drFire()}","if(dr>0)drFire()}chgUpd(dt);")
-rep("(b.L?6:3)","(b.CB?18:b.L?6:3)",2)
+rep("(b.L?6:3)","(b.CB?b.cr||18:b.L?6:3)",2)
 rep("for(const b of bl){if(b.L||b.M)continue;","for(const b of bl){if(b.L||b.M||b.CB)continue;")
 rep("for(const b of bl){\n    if(b.L){","for(const b of bl){\n    if(b.CB){cbD(b);continue}\n    if(b.L){")
 rep("if(mt>0)banner();if(cutI)cutIn();","chgD();rkD();if(mt>0)banner();if(cutI)cutIn();")
@@ -59,6 +59,7 @@ rep("function zkTick(dt){t+=dt;for(const f of fo){f.a+=dt;","function zkTick(dt)
 rep("f.fc+=dt*D().fr*GF()*(f.k=='z'||f.k=='b'?1:.88);","f.fc+=dt*D().fr*GF()*(f.k=='z'||f.k=='b'?1:di?.83:.88);")
 rep("&&R()<(di?.24:.12))continue;WV[op]","&&R()<(di?.27:.12))continue;WV[op]")
 rep("(bo||mid?3.6:di?3.05:2.7)","(bo||mid?3.6:di?3.2:2.7)")
+rep("$('sfd').textContent=SP().ds}","$('sfd').textContent=SP().ds+'｜'+cbName(si)}")
 # ---- HTML
 rep('<p id="stn"></p>','<button id="rsh" type="button" aria-pressed="false">ボスラッシュ</button><p id="stn"></p>')
 rep('<button type="button" role="tab" data-c="3">EX</button></div>','<button type="button" role="tab" data-c="3">EX</button><button type="button" role="tab" data-c="4">雑魚敵</button></div>')
