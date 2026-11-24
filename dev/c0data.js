@@ -22,7 +22,7 @@ function gTick(dt){GD=GY-gYl;gYl=GY;if(!(GD>=0&&GD<40))GD=0;
   for(const d of GDEC)d.y+=GD;GDEC=GDEC.filter(d=>d.y<H+60);
   if(MOR.length&&!fo.some(f=>f.k=='b'&&!(f.dy>0)))MOR=[];
   for(const m of MOR){m.y+=GD;m.w-=dt;if(m.w<=0&&!m.d){m.d=1;explode(m.x,m.y,10,'#ffb347');shake=Math.max(shake,6);sfx('hit');
-      for(let i=0;i<m.n;i++)fireS(0,m.x,m.y,i/m.n*TAU+m.o,1.55);for(let i=0;i<8;i++)pt.push({x:m.x,y:m.y,vx:(R()-.5)*3,vy:(R()-.5)*3,l:22,m:22,k:'s',c:'#ffd27a',sz:3})}}
+      for(let i=0;i<m.n;i++)fireS(13,m.x,m.y,i/m.n*TAU+m.o,1.55);for(let i=0;i<8;i++)pt.push({x:m.x,y:m.y,vx:(R()-.5)*3,vy:(R()-.5)*3,l:22,m:22,k:'s',c:'#ffd27a',sz:3})}}
   MOR=MOR.filter(m=>!m.d)}
 function gDec(x,y,r,k){GDEC.push({x,y,r,k:k||'c',s:R()*9});if(GDEC.length>60)GDEC.splice(0,GDEC.length-60)}
 function gTurn(a,b,s){let d=b-a;while(d>Math.PI)d-=TAU;while(d<-Math.PI)d+=TAU;return a+cl(d,-s,s)}
@@ -101,7 +101,7 @@ Object.assign(EDR,{N:dN,O:dO,P:dP,Q:dQ,U:dU});
 Object.assign(EKL,{N:f=>gDec(f.x,f.y,16),O:f=>gDec(f.x,f.y,22),P:f=>gDec(f.x,f.y,13),Q:f=>gDec(f.x,f.y,11)});
 Object.assign(EBG,{N:3,O:5,P:3,Q:2,U:3});Object.assign(EDB,{O:.4,Q:.3});Object.assign(ECAP,{N:5,O:2,P:4,Q:6,U:3});
 Object.assign(KC,{N:'#ffb070',O:'#ff8a5c',P:'#c8d060',Q:'#ffd166',U:'#9fe0ff'});
-Object.assign(FSM,{N:0,O:3,P:0,Q:0,U:0});
+Object.assign(FSM,{N:10,O:11,P:10,Q:12,U:12});
 Object.assign(WV,{tr:xs=>xs.forEach(x=>mkEn('N',x)),sm:xs=>xs.forEach(x=>mkEn('O',x)),tk:xs=>xs.forEach(x=>mkEn('P',x)),cv:sd=>cvy(sd),hc:xs=>xs.forEach(x=>mkEn('U',x))});
 
 // ---------- mid-boss 22: 重戦車ガントレット ----------
@@ -164,11 +164,11 @@ function bhmAI(b,dt){b.nc=1;b.gd=1;if(bEnter(b,dt,118,.85))return;
   const p=b.hp/b.mh;
   if(live(b,'gmo').length&&p<.85){b.mo=(b.mo??110)-dt;if(b.mo<=0){b.mo=p>.45?230:180;mortar(ship.x,ship.y,74,p>.45?6:8);if(p<.33)mortar(ship.x+(ship.x<W/2?90:-90),ship.y-40,92,8)}}
   b.t-=dt;if(b.t>0)return;b.n++;const x=b.x+Math.cos(b.ta)*62,y=b.y+16+Math.sin(b.ta)*62,a=b.ta;
-  if(p>.66){b.t=82;b.mf=8;if(b.n%3)for(let i=-2;i<=2;i++)fireS(0,x,y,a+i*.2,2.8);else for(let i=0;i<12;i++)fireS(0,b.x,b.y+16,i/14*TAU+b.n*.2,2)}
-  else if(p>.33){const m=b.n%3;b.mf=8;if(m==0){b.t=66;for(let i=-2;i<=2;i++)fireS(0,x,y,a+i*.18,2.9)}else if(m==1){b.t=66;for(let i=0;i<14;i++)fireS(0,b.x,b.y+16,i/14*TAU+b.n*.13,2.1)}else{b.t=24;for(const o of[-.1,.1])fireS(0,x,y,a+o,3.2);if(b.n%6==2)b.t=56}}
-  else{b.t=17;b.mf=4;fireS(0,x,y,a+Math.sin(b.n*.45)*.55,3);if(b.n%7==0)for(let i=0;i<10;i++)fireS(0,b.x,b.y+16,i/10*TAU+b.n*.1,2.1)}}
+  if(p>.66){b.t=82;b.mf=8;if(b.n%3)for(let i=-2;i<=2;i++)fireS(10,x,y,a+i*.2,2.8);else for(let i=0;i<12;i++)fireS(10,b.x,b.y+16,i/14*TAU+b.n*.2,2)}
+  else if(p>.33){const m=b.n%3;b.mf=8;if(m==0){b.t=66;for(let i=-2;i<=2;i++)fireS(10,x,y,a+i*.18,2.9)}else if(m==1){b.t=66;for(let i=0;i<14;i++)fireS(10,b.x,b.y+16,i/14*TAU+b.n*.13,2.1)}else{b.t=24;for(const o of[-.1,.1])fireS(10,x,y,a+o,3.2);if(b.n%6==2)b.t=56}}
+  else{b.t=17;b.mf=4;fireS(10,x,y,a+Math.sin(b.n*.45)*.55,3);if(b.n%7==0)for(let i=0;i<10;i++)fireS(10,b.x,b.y+16,i/10*TAU+b.n*.1,2.1)}}
 Object.assign(PDRAW,{gtr:pdGtr,gmo:pdGmo});
-Object.assign(PFIRE,{gtr:(f,q,P,a)=>{if(!gAimOk(q.ba??a,a))return;for(const o of[-.12,.12])fireS(0,P.x,P.y,a+o,2.6)}});
+Object.assign(PFIRE,{gtr:(f,q,P,a)=>{if(!gAimOk(q.ba??a,a))return;for(const o of[-.12,.12])fireS(12,P.x,P.y,a+o,2.6)}});
 {const m0=midSpawn;midSpawn=function(){m0();const f=fo[fo.length-1];if(f&&f.k=='z'&&f.st>=22){f.nc=1;f.gd=1}}}
 
 // ---------- stage data (22..28). stages 2-7 are placeholders until they are built ----------
@@ -177,13 +177,13 @@ Object.assign(PFIRE,{gtr:(f,q,P,a)=>{if(!gAimOk(q.ba??a,a))return;for(const o of
      [1480,'cv',-1],[1600,'tk',[180]],[1720,'hc',[90,270]],[1860,'tr',[60,300]],[1980,'sm',[120,240]],[2120,'tk',[100,260]],[2260,'dv'],[2400,'cv',1],[2520,'tr',[90,180,270]],[2660,'hc',[180]],[2800,'tk',[120,240]],[2940,'sm',[90,270]],[3080,'tr',[150,210]]],
    HX1=[[300,'tk',[60,300]],[900,'hc',[60,300]],[1700,'sm',[180]],[2400,'tk',[90,270]]],VX1=[[500,'sm',[60,300]],[1900,'hc',[120,240]]];
   const mb=MPAT.length;
-  MPAT.push((f,x,y,a)=>{for(let i=-2;i<=2;i++)fireS(0,x,y,a+i*.2,2.7);f.nx=70},
-    (f,x,y)=>{for(let i=0;i<12;i++)fireS(0,x,y,i/12*TAU+f.n*.2,2);f.nx=90},
+  MPAT.push((f,x,y,a)=>{for(let i=-2;i<=2;i++)fireS(10,x,y,a+i*.2,2.7);f.nx=70},
+    (f,x,y)=>{for(let i=0;i<12;i++)fireS(10,x,y,i/12*TAU+f.n*.2,2);f.nx=90},
     f=>{mkEn('P',f.x-50,f.y);mkEn('P',f.x+50,f.y);f.nx=140},
     f=>{mortar(ship.x,ship.y,80,8);f.nx=110});
   const PS=()=>[{ox:-34,oy:-30,r:12,kd:'gtr',cd:120,nm:'副砲',pp:bhmTur},{ox:34,oy:-30,r:12,kd:'gtr',cd:120,nm:'副砲',pp:bhmTur},{ox:0,oy:-22,r:12,kd:'gmo',cd:0,nm:'迫撃砲',pp:bhmTur}];
   for(let i=0;i<7;i++){
     STG.push(i?{...S1,f:'（制作中）',w:{...S1.w}}:S1);SCR.push(SC1);HX.push(HX1);VX.push(VX1);
     HPS.push([440,610,780,990,1150,1240,1950][i]);BN.push(i?'（制作中）':'陸上戦艦ベヒモス');MBN.push(i?'（制作中）':'ガントレット');MHP.push([95,145,195,260,300,290,365][i]);
-    MP.push(['#a8b39a','#2a3324']);MC.push([255,176,96]);MSEQ.push([mb,mb+1,mb,mb+2,mb,mb+3]);MR.push(40);MART.push(mGaunt);MFS[22+i]=0;
-    BR.push(58);BART.push(behem);BAI.push(bhmAI);BCOL.push([255,176,96]);BFS[22+i]=0;PSPEC.push(PS());FEAT.push(null)}}
+    MP.push(['#a8b39a','#2a3324']);MC.push([255,176,96]);MSEQ.push([mb,mb+1,mb,mb+2,mb,mb+3]);MR.push(40);MART.push(mGaunt);MFS[22+i]=10;
+    BR.push(58);BART.push(behem);BAI.push(bhmAI);BCOL.push([255,176,96]);BFS[22+i]=10;PSPEC.push(PS());FEAT.push(null)}}

@@ -75,3 +75,18 @@ function gDraw(k){gLayer(thA,1);if(thA!=thB)gLayer(thB,k);
   if(fo.some(f=>f.k=='b')){cx.fillStyle=`rgba(140,0,40,${.1+.04*Math.sin(t/10)})`;cx.fillRect(-12,-12,W+24,H+24)}}
 {const bg0=bg;bg=function(){const A=thA>=22,B=thB>=22;if(!A&&!B)return bg0();const k=tk*tk*(3-2*tk);if(A&&B)return gDraw(k);
   const a=thA,b=thB,u=k<.5?a:b;thA=thB=u;try{u>=22?gDraw(1):bg0()}finally{thA=a;thB=b}}}
+// ---------- bullets of the ground forces: 10 鉄甲弾 / 11 ミサイル / 12 機銃弾 / 13 砲弾の破片 ----------
+function ebX(q,bp){const a=Math.atan2(q.vy,q.vx);cx.save();cx.translate(q.x,q.y);cx.rotate(a);cx.scale(1.15,1.15);
+  if(q.ty==10){glow(-2,0,12*bp,[255,160,70],.6);cx.fillStyle='rgba(255,190,110,.45)';poly([[-4,-2.6],[-15,0],[-4,2.6]]);cx.fill();
+    cx.beginPath();cx.moveTo(8,0);cx.quadraticCurveTo(5,-3.6,1,-3.6);cx.lineTo(-6,-3.6);cx.lineTo(-6,3.6);cx.lineTo(1,3.6);cx.quadraticCurveTo(5,3.6,8,0);cx.closePath();
+    const g=cx.createLinearGradient(0,-3.6,0,3.6);g.addColorStop(0,'#fff2d6');g.addColorStop(.45,'#e0a050');g.addColorStop(1,'#7a4a18');cx.fillStyle=g;cx.fill();cx.lineWidth=1.6;cx.strokeStyle='#1a0e04';cx.stroke();
+    cx.fillStyle='#c8ccd2';cx.fillRect(-6,-3.6,3,7.2);cx.strokeStyle='#1a0e04';cx.lineWidth=1;cx.strokeRect(-6,-3.6,3,7.2);cx.fillStyle='#fff';cx.fillRect(1,-2.2,4,1.2)}
+  else if(q.ty==11){const fl=5+R()*4;glow(-9,0,12*bp,[255,150,60],.7);cx.fillStyle='#ffb347';poly([[-7,-2.4],[-7-fl,0],[-7,2.4]]);cx.fill();cx.fillStyle='#fff6d0';poly([[-7,-1.2],[-7-fl*.55,0],[-7,1.2]]);cx.fill();
+    cx.fillStyle='#d8424a';for(const s of[-1,1])poly([[-7,s*2.2],[-9,s*5.5],[-4,s*2.2]]);cx.fill();
+    rrp(-7,-2.6,13,5.2,2.4);cx.fillStyle='#f2f4f6';cx.fill();cx.lineWidth=1.5;cx.strokeStyle='#14161a';cx.stroke();
+    cx.fillStyle='#ff4a5a';poly([[6,-2.4],[10,0],[6,2.4]]);cx.fill();cx.lineWidth=1.2;cx.stroke();cx.fillStyle='#14161a';cx.fillRect(-1,-2.6,1.4,5.2)}
+  else if(q.ty==12){glow(0,0,10*bp,[255,140,60],.7);cx.lineCap='round';cx.strokeStyle='rgba(255,110,40,.6)';cx.lineWidth=5;cx.beginPath();cx.moveTo(-11,0);cx.lineTo(5,0);cx.stroke();
+    cx.strokeStyle='#1a0a04';cx.lineWidth=4.4;cx.beginPath();cx.moveTo(-5,0);cx.lineTo(5.5,0);cx.stroke();cx.strokeStyle='#ffffff';cx.lineWidth=2.4;cx.stroke();cx.fillStyle='#fff';cx.beginPath();cx.arc(4,0,1.4,0,TAU);cx.fill()}
+  else{cx.rotate(t/6+q.x);glow(0,0,11*bp,[255,140,60],.55);poly([[5,0],[1.5,3.5],[-4,4],[-2,0],[-4.5,-3.5],[1,-4]]);cx.fillStyle='#d08a50';cx.fill();cx.lineWidth=1.6;cx.strokeStyle='#1e1008';cx.stroke();cx.fillStyle='#ffe0a0';cx.beginPath();cx.arc(.5,0,1.5,0,TAU);cx.fill()}
+  cx.restore()}
+{const e0=ebD;ebD=function(q,bp){if(q.ty>=10)return ebX(q,bp);return e0(q,bp)}}
