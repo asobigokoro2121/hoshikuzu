@@ -1,10 +1,16 @@
 
 // ===== 「宇宙へ」 missiles: 3 kinds, all can be shot down (bombs clear them too) =====
 // 11 小型ミサイル (straight) / 14 誘導ミサイル (homes for a moment) / 15 大型ミサイル (tough, bursts into shrapnel when its fuse runs out)
-function msl(x,y,a,v,kind){const ty=[11,14,15][kind||0],q=fireS(ty,x,y,a,v);if(!q)return;q.mhp=kind==2?3:1;q.hp2=q.mhp;
-  if(kind==1){q.hm=46}else if(kind==2){q.fu=150+R()*30}return q}
+// 小型: fast and keeps accelerating, goes straight, 1 hit
+// 誘導: turns toward the player for a moment, then fires its booster and dashes straight, 1 hit
+// 大型: slow to start but builds speed, takes 3 hits, bursts into shrapnel when its fuse runs out
+const MSLP=[{v:1.15,ac:.024,vm:1.7},{v:1.12,hm:52,bst:1.4},{v:1.1,ac:.008,vm:1.6,fu:150}];
+function msl(x,y,a,v,kind){kind=kind||0;const P=MSLP[kind],ty=[11,14,15][kind],q=fireS(ty,x,y,a,v*P.v);if(!q)return;q.mhp=kind==2?3:1;q.hp2=q.mhp;
+  const s0=Math.hypot(q.vx,q.vy);if(P.ac){q.ac=P.ac;q.vm=s0*P.vm}if(P.hm){q.hm=P.hm;q.bm=P.bst}if(P.fu)q.fu=P.fu+R()*30;return q}
 function mslTick(dt){if(!eb.length)return;
   for(const q of eb){if(q.d||q.ty<11||(q.ty>11&&q.ty<14)||q.ty>15)continue;
+    if(q.ac){const sp=Math.hypot(q.vx,q.vy);if(sp>0&&sp<q.vm){const k=Math.min(q.vm,sp+q.ac*dt)/sp;q.vx*=k;q.vy*=k}}
+    if(q.bm&&!(q.hm>0)){q.vx*=q.bm;q.vy*=q.bm;q.bm=0;q.bst=14;pt.push({x:q.x,y:q.y,vx:0,vy:0,l:12,m:12,c:'#ffd27a',ring:8})}if(q.bst>0)q.bst-=dt;
     if(q.ty==15&&q.fu!=null){q.fu-=dt;if(q.fu<=0){q.d=1;explode(q.x,q.y,8,'#ffb347');sfx('hit');for(let i=0;i<6;i++)fireS(13,q.x,q.y,i/6*TAU+R(),1.7);continue}}
     for(const b of bl){if(b.d||(b.h&&b.h.has(q)))continue;const rr=7+(b.CB?(b.cr||18):b.L?6:3)+(q.ty==15?3:0);if(Math.abs(b.x-q.x)>rr||Math.abs(b.y-q.y)>rr+8)continue;
       if(Math.hypot(b.x-q.x,b.y-q.y)>rr)continue;if(b.pi||b.L||b.CB||q.ty!=15){(b.h||(b.h=new Set())).add(q)}else b.d=1;
@@ -25,7 +31,7 @@ function mslBody(L,R0,cBody,cNose,cFin,band){const fl=6+R()*6;glow(-L-2,0,11,[25
   const tr=ebTrail(q,q.ty==15?11:9,3),n=tr.length;cx.save();cx.translate(-Math.cos(a)*14,-Math.sin(a)*14);
   for(let k=n-1;k>=1;k--){const u=k/n,r=(q.ty==15?3:2.4)+k*.75;cx.fillStyle=q.ty==14?`rgba(255,${200-k*6},${150-k*8},${.5*(1-u)})`:`rgba(210,214,222,${.6*(1-u)})`;cx.beginPath();cx.arc(tr[k][0]+Math.sin(k*1.9+q.x)*.3*k,tr[k][1],r,0,TAU);cx.fill()}cx.restore();
   cx.save();cx.translate(q.x,q.y);cx.rotate(a);cx.lineJoin='round';
-  if(q.ty==14){cx.scale(1.25,1.25);const hm=q.hm>0;glow(0,0,9*bp,[255,120,60],hm?.55:.3);
+  if(q.ty==14){cx.scale(1.25,1.25);const hm=q.hm>0;glow(0,0,9*bp,[255,120,60],hm?.55:.3);if(!hm&&q.bm===0){const fl=10+R()*8;glow(-16,0,12,[255,210,120],.9);cx.fillStyle='rgba(255,200,110,.85)';poly([[-12,-2.6],[-13-fl,0],[-12,2.6]]);cx.fill()}
     mslBody(11,2.3,['#5a606a','#2e3238','#16181c'],'#ff8a2e','#ffb347','#ff5d73');
     const bl=Math.floor(t/3)%2;glow(11,0,6,[255,120,60],bl?1:.4);cx.fillStyle=bl?'#fff':'#ff8a2e';cx.beginPath();cx.arc(10.5,0,1.3,0,TAU);cx.fill();
     if(hm){cx.strokeStyle=`rgba(255,160,80,${.5+.3*Math.sin(t/3)})`;cx.lineWidth=1;cx.beginPath();cx.arc(0,0,10,-.6,.6);cx.stroke()}}

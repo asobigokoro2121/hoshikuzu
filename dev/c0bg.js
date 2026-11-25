@@ -169,7 +169,7 @@ function ebX(q,bp){const a=Math.atan2(q.vy,q.vx);
     cx.save();cx.clip();const ng=cx.createLinearGradient(4,0,9.5,0);ng.addColorStop(0,'rgba(255,110,40,0)');ng.addColorStop(.35,'#ff7a2e');ng.addColorStop(.75,'#ffc070');ng.addColorStop(1,'#fff6e0');cx.fillStyle=ng;cx.fillRect(3,-4,7,8);
     cx.fillStyle='#c8963c';cx.fillRect(-4.6,-4,1.5,8);cx.fillStyle='rgba(255,255,255,.55)';cx.fillRect(-6,-2.9,13,1.1);cx.restore();
     cx.fillStyle='#fff';cx.beginPath();cx.arc(6,-.6,1,0,TAU);cx.fill()}
-  else if(q.ty==11){cx.scale(1.12,1.12);const fl=7+R()*6;glow(-16,0,11*bp,[255,140,50],.85);
+  else if(q.ty==11){cx.scale(1.12,1.12);const fl=(7+R()*6)*(q.vm?.7+.6*Math.min(1,Math.hypot(q.vx,q.vy)/q.vm):1);glow(-16,0,11*bp,[255,140,50],.85);
     cx.fillStyle='rgba(255,120,40,.9)';poly([[-14,-2],[-15-fl,0],[-14,2]]);cx.fill();cx.fillStyle='#fff0b8';poly([[-14,-1.1],[-15-fl*.55,0],[-14,1.1]]);cx.fill();
     cx.fillStyle='#2a2e34';cx.fillRect(-15,-1.7,2,3.4);
     // tail fins (尾翼): big swept red fins at the rear
