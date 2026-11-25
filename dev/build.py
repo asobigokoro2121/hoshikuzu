@@ -85,6 +85,9 @@ CSS='''#rsh{font:inherit;font-size:13px;padding:4px 16px;border:2px solid #7a5ab
 .rs-sp i{font-style:normal;color:#c8d0ff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.rs-sp b{font-weight:400;color:#fff}
 #zkcos{grid-template-columns:repeat(4,1fr) .8fr 1.1fr;gap:4px;width:min(100%,356px)}#zkcos button{font-size:11px;padding:5px 0;letter-spacing:-.02em}#zkd{white-space:pre-line}
 '''
+# ---- very hard: start with 3 lives (was 2)
+rep("{n:'すごくむずかしい',lv:2,","{n:'すごくむずかしい',lv:3,")
+rep("DF[3].ds='ライフ2　ボム1　新型の敵が勢ぞろい","DF[3].ds='ライフ3　ボム1　新型の敵が勢ぞろい")
 exec(open(os.path.join(D,'course0.py')).read())
 rep('</style>',CSS+'</style>')
 feat=open(os.path.join(D,'feat2.js')).read()
